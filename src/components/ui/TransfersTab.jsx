@@ -1,0 +1,226 @@
+import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import api, { getArticles, timeAgo } from '../../utils/api'
+import { getTeamLogo } from '../../data/logos'
+
+const PAGE_SIZE = 8
+
+const LEAGUES = [
+  { label: 'Premier League', slug: 'premier-league' },
+  { label: 'La Liga',        slug: 'la-liga' },
+  { label: 'Serie A',        slug: 'serie-a' },
+  { label: 'Bundesliga',     slug: 'bundesliga' },
+  { label: 'Ligue 1',        slug: 'ligue-1' },
+]
+
+// Plausible clubs per league, used only to flavour placeholder headlines
+// when a league has no real tagged transfer articles yet.
+const LEAGUE_CLUBS = {
+  'premier-league': ['Arsenal', 'Chelsea', 'Liverpool', 'Manchester City', 'Manchester United', 'Tottenham Hotspur'],
+  'la-liga':        ['Real Madrid', 'Barcelona', 'Atletico Madrid', 'Sevilla', 'Valencia'],
+  'serie-a':        ['Juventus', 'AC Milan', 'Inter Milan', 'AS Roma', 'Napoli'],
+  'bundesliga':     ['Bayern Munich', 'Borussia Dortmund', 'RB Leipzig', 'Bayer Leverkusen'],
+  'ligue-1':        ['Paris Saint-Germain', 'Olympique Lyon', 'Olympique Marseille', 'Monaco'],
+}
+
+const TRANSFER_HEADLINE_TEMPLATES = [
+  '{club} agree deal for versatile attacking option',
+  '{club} set asking price for out-of-favour midfielder',
+  'Exclusive: {club} scouts monitoring rising young talent',
+  '{club} confirm departure of long-serving squad player',
+  'Deal update: {club} closing in on defensive reinforcement',
+  '{club} reject opening offer for key player',
+  '{club} linked with surprise move for out-of-contract free agent',
+  'Here we go? {club} step up interest in January target',
+]
+
+function buildDefaultLeagueTransfers(leagueSlug, leagueLabel) {
+  const clubs = LEAGUE_CLUBS[leagueSlug] || ['Northgate United', 'Riverside Athletic', 'Ashford Town']
+  const now = Date.now()
+  return TRANSFER_HEADLINE_TEMPLATES.map((template, i) => {
+    const club = clubs[i % clubs.length]
+    return {
+      _id: `mock-transfer-${leagueSlug}-${i}`,
+      slug: `placeholder-transfer-${leagueSlug}-${i}`,
+      title: template.replace('{club}', club),
+      excerpt: `Placeholder ${leagueLabel} transfer update — swap this for real tagged articles whenever you're ready.`,
+      tags: [club],
+      publishedAt: new Date(now - i * 4 * 60 * 60 * 1000).toISOString(),
+      featuredImage: { url: `https://picsum.photos/seed/${leagueSlug}-transfer-${i}/800/450` },
+    }
+  })
+}
+
+function TeamTag({ tags = [] }) {
+  if (!tags || tags.length === 0) return null
+  const team = tags[0]
+  const logo = getTeamLogo(team)
+
+  if (logo) {
+    return (
+      <span className="absolute bottom-3 right-3 bg-white shadow-md rounded-lg p-1.5">
+        <img src={logo} alt={team} className="w-5 h-5 object-contain" />
+      </span>
+    )
+  }
+
+  return (
+    <span className="absolute bottom-3 right-3 bg-dark/80 text-primary text-[10px] font-black uppercase tracking-wide px-2 py-1 rounded-lg backdrop-blur-sm">
+      {team}
+    </span>
+  )
+}
+
+function TransferCard({ article }) {
+  return (
+    <Link
+      to={`/article/${article.slug}`}
+      className="group block bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-md transition-shadow"
+    >
+      <div className="relative aspect-video overflow-hidden bg-gray-100">
+        {article.featuredImage?.url
+          ? <img src={article.featuredImage.url} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+          : <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-100" />
+        }
+        <TeamTag tags={article.tags} />
+      </div>
+      <div className="p-4">
+        <h3 className="text-gray-900 font-bold text-sm leading-snug group-hover:text-primary transition-colors">{article.title}</h3>
+        <p className="text-gray-400 text-xs mt-2">{timeAgo(article.publishedAt)}</p>
+      </div>
+    </Link>
+  )
+}
+
+function SortToggle({ value, onChange }) {
+  return (
+    <div className="flex items-center gap-2 mb-8">
+      <span className="text-gray-500 text-sm font-medium">Sort by:</span>
+      <div className="flex bg-gray-100 rounded-full p-1 gap-1">
+        {['latest', 'oldest'].map(opt => (
+          <button
+            key={opt}
+            onClick={() => onChange(opt)}
+            className={`px-4 py-1.5 rounded-full text-sm font-bold capitalize transition-all ${
+              value === opt
+                ? 'bg-primary text-dark shadow-sm'
+                : 'text-gray-500 hover:text-dark'
+            }`}
+          >
+            {opt.charAt(0).toUpperCase() + opt.slice(1)}
+          </button>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function NewsSection({ label, categoryId, tag, leagueSlug, sort, excludeId }) {
+  const [articles, setArticles] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [page, setPage] = useState(1)
+  const [hasMore, setHasMore] = useState(false)
+  const [loadingMore, setLoadingMore] = useState(false)
+
+  // League sections filter by tag (e.g. tag your transfer articles with
+  // the league slug); the "Top Stories" section stays category-wide.
+  const filterParams = tag ? { tag } : { category: categoryId }
+  const usesFallback = !!leagueSlug
+
+  useEffect(() => {
+    if (!categoryId && !tag) return
+    setLoading(true)
+    setPage(1)
+    getArticles({ ...filterParams, limit: PAGE_SIZE, page: 1, sort: sort === 'oldest' ? 'asc' : 'desc' })
+      .then(res => {
+        const data = (res.data.data || []).filter(a => a._id !== excludeId)
+        if (data.length === 0 && usesFallback) {
+          setArticles(buildDefaultLeagueTransfers(leagueSlug, label.replace(' Transfers', '')))
+          setHasMore(false)
+        } else {
+          setArticles(data)
+          setHasMore(data.length === PAGE_SIZE)
+        }
+      })
+      .catch(() => {
+        if (usesFallback) setArticles(buildDefaultLeagueTransfers(leagueSlug, label.replace(' Transfers', '')))
+        else setArticles([])
+      })
+      .finally(() => setLoading(false))
+  }, [categoryId, tag, sort])
+
+  const loadMore = () => {
+    const next = page + 1
+    setLoadingMore(true)
+    getArticles({ ...filterParams, limit: PAGE_SIZE, page: next, sort: sort === 'oldest' ? 'asc' : 'desc' })
+      .then(res => {
+        const data = (res.data.data || []).filter(a => a._id !== excludeId)
+        setArticles(prev => [...prev, ...data])
+        setPage(next)
+        setHasMore(data.length === PAGE_SIZE)
+      })
+      .catch(console.error)
+      .finally(() => setLoadingMore(false))
+  }
+
+  if (!loading && articles.length === 0) return null
+
+  return (
+    <div className="mb-10">
+      <div className="flex items-center justify-between border-t-4 border-dark pt-3 mb-6">
+        <h2 className="text-dark font-black text-lg uppercase tracking-wide">{label}</h2>
+      </div>
+      {loading ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="rounded-xl overflow-hidden border border-gray-200 animate-pulse">
+              <div className="aspect-video bg-gray-200" />
+              <div className="p-4 space-y-2">
+                <div className="h-4 bg-gray-200 rounded w-full" />
+                <div className="h-3 bg-gray-100 rounded w-1/3" />
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {articles.map(a => <TransferCard key={a._id} article={a} />)}
+          </div>
+          {hasMore && (
+            <div className="mt-6 flex justify-center">
+              <button
+                onClick={loadMore}
+                disabled={loadingMore}
+                className="px-8 py-3 bg-dark text-white font-bold rounded-xl hover:bg-primary hover:text-dark transition-all disabled:opacity-50 text-sm"
+              >
+                {loadingMore ? 'Loading...' : `More ${label}`}
+              </button>
+            </div>
+          )}
+        </>
+      )}
+    </div>
+  )
+}
+
+export default function TransfersTab({ categoryId, excludeId }) {
+  const [sort, setSort] = useState('latest')
+  if (!categoryId) return null
+
+  return (
+    <div className="mt-6">
+      <SortToggle value={sort} onChange={setSort} />
+      <NewsSection label="Top Stories" categoryId={categoryId} sort={sort} excludeId={excludeId} />
+      {LEAGUES.map(league => (
+        <NewsSection
+          key={league.slug}
+          label={`${league.label} Transfers`}
+          tag={league.slug}
+          leagueSlug={league.slug}
+          sort={sort}
+        />
+      ))}
+    </div>
+  )
+}
