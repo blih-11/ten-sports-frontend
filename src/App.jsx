@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import Layout from './components/layout/Layout'
+import Analytics from './components/Analytics'
 import { ActiveSportProvider } from './context/ActiveSportContext'
 import Home from './pages/Home'
 import ArticlePage from './pages/ArticlePage'
@@ -17,6 +18,7 @@ import Transfers from './pages/Transfers'
 export default function App() {
   return (
     <BrowserRouter>
+      <Analytics />
       <ActiveSportProvider>
         <Layout>
           <Routes>
