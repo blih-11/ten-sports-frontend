@@ -44,7 +44,7 @@ export default function Home() {
       <BreakingTicker />
 
       <div className="max-w-7xl mx-auto px-4 py-8">
-        <AdBanner size="leaderboard" />
+        {/* <AdBanner size="leaderboard" /> */}
 
         {/* Hero block: 1 main story + 4 side news */}
         {!loading && (hero || side.length > 0) && (
