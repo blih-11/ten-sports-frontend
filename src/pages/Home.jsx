@@ -43,7 +43,7 @@ export default function Home() {
 
       <BreakingTicker />
 
-      <div className="max-w-7xl mx-auto px-4 py-8">
+      <div className="max-w-7xl mx-auto px-4 py-">
         {/* <AdBanner size="leaderboard" /> */}
 
         {/* Hero block: 1 main story + 4 side news */}
@@ -62,7 +62,7 @@ export default function Home() {
             </div>
 
             {/* Mobile hero */}
-            <div className="lg:hidden -mx-4 sm:-mx-6 mb-6">
+            <div className="lg:hidden mt-0 -mx-4 sm:-mx-6 mb-6">
               {hero && (
                 <Link to={`/article/${hero.slug}`} className="group block relative">
                   <div className="w-full h-[420px] sm:h-[500px] overflow-hidden">
