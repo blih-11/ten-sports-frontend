@@ -13,44 +13,6 @@ const LEAGUES = [
   { label: 'Ligue 1',        slug: 'ligue-1' },
 ]
 
-// Plausible clubs per league, used only to flavour placeholder headlines
-// when a league has no real tagged transfer articles yet.
-const LEAGUE_CLUBS = {
-  'premier-league': ['Arsenal', 'Chelsea', 'Liverpool', 'Manchester City', 'Manchester United', 'Tottenham Hotspur'],
-  'la-liga':        ['Real Madrid', 'Barcelona', 'Atletico Madrid', 'Sevilla', 'Valencia'],
-  'serie-a':        ['Juventus', 'AC Milan', 'Inter Milan', 'AS Roma', 'Napoli'],
-  'bundesliga':     ['Bayern Munich', 'Borussia Dortmund', 'RB Leipzig', 'Bayer Leverkusen'],
-  'ligue-1':        ['Paris Saint-Germain', 'Olympique Lyon', 'Olympique Marseille', 'Monaco'],
-}
-
-const TRANSFER_HEADLINE_TEMPLATES = [
-  '{club} agree deal for versatile attacking option',
-  '{club} set asking price for out-of-favour midfielder',
-  'Exclusive: {club} scouts monitoring rising young talent',
-  '{club} confirm departure of long-serving squad player',
-  'Deal update: {club} closing in on defensive reinforcement',
-  '{club} reject opening offer for key player',
-  '{club} linked with surprise move for out-of-contract free agent',
-  'Here we go? {club} step up interest in January target',
-]
-
-function buildDefaultLeagueTransfers(leagueSlug, leagueLabel) {
-  const clubs = LEAGUE_CLUBS[leagueSlug] || ['Northgate United', 'Riverside Athletic', 'Ashford Town']
-  const now = Date.now()
-  return TRANSFER_HEADLINE_TEMPLATES.map((template, i) => {
-    const club = clubs[i % clubs.length]
-    return {
-      _id: `mock-transfer-${leagueSlug}-${i}`,
-      slug: `placeholder-transfer-${leagueSlug}-${i}`,
-      title: template.replace('{club}', club),
-      excerpt: `Placeholder ${leagueLabel} transfer update — swap this for real tagged articles whenever you're ready.`,
-      tags: [club],
-      publishedAt: new Date(now - i * 4 * 60 * 60 * 1000).toISOString(),
-      featuredImage: { url: `https://picsum.photos/seed/${leagueSlug}-transfer-${i}/800/450` },
-    }
-  })
-}
-
 function TeamTag({ tags = [] }) {
   if (!tags || tags.length === 0) return null
   const team = tags[0]
@@ -115,17 +77,20 @@ function SortToggle({ value, onChange }) {
   )
 }
 
-function NewsSection({ label, categoryId, tag, leagueSlug, sort, excludeId }) {
+function NewsSection({ label, categoryId, tag, sort, excludeId }) {
   const [articles, setArticles] = useState([])
   const [loading, setLoading] = useState(true)
   const [page, setPage] = useState(1)
   const [hasMore, setHasMore] = useState(false)
   const [loadingMore, setLoadingMore] = useState(false)
 
-  // League sections filter by tag (e.g. tag your transfer articles with
-  // the league slug); the "Top Stories" section stays category-wide.
-  const filterParams = tag ? { tag } : { category: categoryId }
-  const usesFallback = !!leagueSlug
+  // Combine whichever filters are provided: Top Stories uses category +
+  // the transfer tag together, league sections use tag only (transfer +
+  // league slug, already comma-joined by the caller).
+  const filterParams = {
+    ...(categoryId ? { category: categoryId } : {}),
+    ...(tag ? { tag } : {}),
+  }
 
   useEffect(() => {
     if (!categoryId && !tag) return
@@ -134,18 +99,10 @@ function NewsSection({ label, categoryId, tag, leagueSlug, sort, excludeId }) {
     getArticles({ ...filterParams, limit: PAGE_SIZE, page: 1, sort: sort === 'oldest' ? 'asc' : 'desc' })
       .then(res => {
         const data = (res.data.data || []).filter(a => a._id !== excludeId)
-        if (data.length === 0 && usesFallback) {
-          setArticles(buildDefaultLeagueTransfers(leagueSlug, label.replace(' Transfers', '')))
-          setHasMore(false)
-        } else {
-          setArticles(data)
-          setHasMore(data.length === PAGE_SIZE)
-        }
+        setArticles(data)
+        setHasMore(data.length === PAGE_SIZE)
       })
-      .catch(() => {
-        if (usesFallback) setArticles(buildDefaultLeagueTransfers(leagueSlug, label.replace(' Transfers', '')))
-        else setArticles([])
-      })
+      .catch(() => setArticles([]))
       .finally(() => setLoading(false))
   }, [categoryId, tag, sort])
 
@@ -211,13 +168,12 @@ export default function TransfersTab({ categoryId, excludeId }) {
   return (
     <div className="mt-6">
       <SortToggle value={sort} onChange={setSort} />
-      <NewsSection label="Top Stories" categoryId={categoryId} sort={sort} excludeId={excludeId} />
+      <NewsSection label="Top Stories" categoryId={categoryId} tag="transfer" sort={sort} excludeId={excludeId} />
       {LEAGUES.map(league => (
         <NewsSection
           key={league.slug}
           label={`${league.label} Transfers`}
-          tag={league.slug}
-          leagueSlug={league.slug}
+          tag={`transfer,${league.slug}`}
           sort={sort}
         />
       ))}

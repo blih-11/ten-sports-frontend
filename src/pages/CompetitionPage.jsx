@@ -80,30 +80,6 @@ function buildDefaultArticles(competition) {
   }))
 }
 
-const TRANSFER_HEADLINES = [
-  '{comp} clubs battle for top summer target',
-  'Exclusive: {comp} side closing in on marquee signing',
-  '{comp} record sale: club set to cash in on star player',
-  '{comp} clubs linked with shock free agent move',
-  'Here we go? {comp} side agrees personal terms with target',
-  '{comp} window update: who is moving where',
-]
-
-function buildDefaultTransfers(competition) {
-  const name = competition?.name || 'This Competition'
-  const now = Date.now()
-  return TRANSFER_HEADLINES.map((template, i) => ({
-    _id: `mock-comp-transfer-${competition?.slug}-${i}`,
-    slug: `placeholder-comp-transfer-${competition?.slug}-${i}`,
-    title: template.replace(/{comp}/g, name),
-    excerpt: `Placeholder transfer update for ${name}.`,
-    category: { name: 'Transfers', slug: 'transfers' },
-    publishedAt: new Date(now - i * 5 * 60 * 60 * 1000).toISOString(),
-    featuredImage: { url: `https://picsum.photos/seed/comp-transfer-${competition?.slug}-${i}/800/450` },
-    tags: [competition?.slug, 'transfer'].filter(Boolean),
-  }))
-}
-
 // ─── Same opponents/fixtures helpers as TeamPage ─────────────────
 const DEFAULT_OPPONENTS = [
   'Riverside Athletic', 'Ashford Town', 'Kingsmoor FC', 'Whitfield Rovers',
@@ -604,16 +580,16 @@ function CompTransfersTab({ competition }) {
 
   useEffect(() => {
     setLoading(true)
-    getCompetitionFeed(competition.slug, { limit: 30 })
+    getCompetitionFeed(competition.slug, { limit: 50 })
       .then(res => {
         const data = res.data.data?.latestNews || []
         const filtered = data.filter(a =>
           (a.tags || []).some(t => t.toLowerCase().includes('transfer')) ||
           /transfer/i.test(a.title)
         )
-        setArticles(filtered.length > 0 ? filtered : buildDefaultTransfers(competition))
+        setArticles(filtered)
       })
-      .catch(() => setArticles(buildDefaultTransfers(competition)))
+      .catch(() => setArticles([]))
       .finally(() => setLoading(false))
   }, [competition.slug])
 

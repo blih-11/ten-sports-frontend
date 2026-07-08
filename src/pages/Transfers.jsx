@@ -29,7 +29,7 @@ export default function Transfers() {
         const football = categories.find(c => c.slug === 'football')
         setCategory(football || null)
         if (!football) return null
-        return getArticles({ category: football._id, limit: 1, page: 1 })
+        return getArticles({ category: football._id, tag: 'transfer', limit: 1, page: 1 })
       })
       .then(res => {
         if (res) setHero((res.data.data || [])[0] || null)

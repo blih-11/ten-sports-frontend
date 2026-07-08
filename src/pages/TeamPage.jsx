@@ -688,29 +688,6 @@ function TeamNewsTab({ team }) {
 }
 
 // ─── Transfers tab (team-tagged articles, transfer-flavoured) ─────
-const TRANSFER_HEADLINES = [
-  '{team} agree deal for versatile attacking option',
-  '{team} set asking price for out-of-favour midfielder',
-  'Exclusive: {team} scouts monitoring rising young talent',
-  '{team} confirm departure of long-serving squad player',
-  'Deal update: {team} closing in on defensive reinforcement',
-  '{team} reject opening offer for key player',
-]
-
-function buildDefaultTeamTransfers(team) {
-  const name = team?.name || 'This team'
-  const now = Date.now()
-  return TRANSFER_HEADLINES.map((template, i) => ({
-    _id: `mock-transfer-${team?.slug || 'team'}-${i}`,
-    slug: `placeholder-transfer-${team?.slug || 'team'}-${i}`,
-    title: template.replace(/{team}/g, name),
-    excerpt: `Placeholder transfer update for ${name} — swap this for real tagged transfer articles whenever you're ready.`,
-    category: { name: 'Transfers', slug: 'transfers' },
-    publishedAt: new Date(now - i * 5 * 60 * 60 * 1000).toISOString(),
-    featuredImage: { url: `https://picsum.photos/seed/${team?.slug || 'team'}-transfer-${i}/800/450` },
-    tags: [team?.slug, 'transfer'].filter(Boolean),
-  }))
-}
 
 function TeamTransfersTab({ team }) {
   const teamSlug = team.slug
@@ -719,16 +696,16 @@ function TeamTransfersTab({ team }) {
 
   useEffect(() => {
     setLoading(true)
-    getTeamFeed(teamSlug, { limit: 30 })
+    getTeamFeed(teamSlug, { limit: 50 })
       .then(res => {
         const data = res.data.data?.latestNews || []
         const filtered = data.filter(a =>
           (a.tags || []).some(t => t.toLowerCase().includes('transfer')) ||
           /transfer/i.test(a.title)
         )
-        setArticles(filtered.length > 0 ? filtered : buildDefaultTeamTransfers(team))
+        setArticles(filtered)
       })
-      .catch(() => setArticles(buildDefaultTeamTransfers(team)))
+      .catch(() => setArticles([]))
       .finally(() => setLoading(false))
   }, [teamSlug])
 

@@ -20,7 +20,7 @@ export default function CategoryHero({ hero, side = [] }) {
       </div>
 
       {/* Mobile hero — full-bleed image with overlay, same style as the Home page hero */}
-      <div className="lg:hidden -mx-4 sm:-mx-6 mb-6">
+      <div className="lg:hidden -mt-8 -mx-4 sm:-mx-6 mb-6">
         {hero && (
           <Link to={`/article/${hero.slug}`} className="group block relative">
             <div className="w-full h-[300px] sm:h-[380px] overflow-hidden">
