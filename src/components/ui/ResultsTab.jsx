@@ -92,7 +92,7 @@ function MatchRow({ fixture }) {
 
       {/* Home logo */}
       <div className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 shrink-0 flex items-center justify-center">
-        <TeamLogo name={fixture.homeTeam?.name} className="w-full h-full" />
+        <TeamLogo name={fixture.homeTeam?.name} logo={fixture.homeTeam?.logo} className="w-full h-full" />
       </div>
 
       {/* Score / time */}
@@ -122,7 +122,7 @@ function MatchRow({ fixture }) {
 
       {/* Away logo */}
       <div className="w-5 h-5 sm:w-6 sm:h-6 md:w-8 md:h-8 shrink-0 flex items-center justify-center">
-        <TeamLogo name={fixture.awayTeam?.name} className="w-full h-full" />
+        <TeamLogo name={fixture.awayTeam?.name} logo={fixture.awayTeam?.logo} className="w-full h-full" />
       </div>
 
       {/* Away name */}
@@ -139,7 +139,7 @@ function CompetitionBlock({ group }) {
     <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden mb-4">
       <div className="flex items-center justify-between px-5 py-3 border-b border-gray-100">
         <div className="flex items-center gap-2">
-          <LeagueLogo slug={group.league?.slug} name={group.league?.name} className="w-6 h-6" />
+          <LeagueLogo slug={group.league?.slug} name={group.league?.name} logo={group.league?.logo} className="w-6 h-6" />
           <span className="text-sm font-black text-gray-800">
             {group.league?.name || 'Competition'}
           </span>
@@ -270,7 +270,7 @@ function LeagueSidebar({ leagues, activeLeague, onSelect }) {
                     : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                 }`}
               >
-                <LeagueLogo slug={l.slug} name={l.name} className="w-5 h-5 shrink-0" />
+                <LeagueLogo slug={l.slug} name={l.name} logo={l.logo} className="w-5 h-5 shrink-0" />
                 <span className="truncate">{l.name}</span>
               </button>
             ))}
@@ -354,7 +354,7 @@ export default function ResultsTab({ categorySlug }) {
                       : 'bg-white text-gray-600 border border-gray-200 hover:border-gray-300'
                   }`}
                 >
-                  <LeagueLogo slug={l.slug} name={l.name} className="w-4 h-4" />
+                  <LeagueLogo slug={l.slug} name={l.name} logo={l.logo} className="w-4 h-4" />
                   <span>{l.name}</span>
                 </button>
               ))}

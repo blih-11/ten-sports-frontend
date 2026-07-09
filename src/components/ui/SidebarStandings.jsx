@@ -141,7 +141,7 @@ export default function SidebarStandings({ categorySlug, showFull = false, leagu
                   <td className={`py-2.5 px-3 font-semibold ${isHighlighted ? 'text-dark font-black' : 'text-gray-500'}`}>{s.rank}</td>
                   <td className="py-2.5">
                     <div className="flex items-center gap-2 min-w-0">
-                      <TeamLogo name={s.team?.name} className="w-4 h-4" />
+                      <TeamLogo name={s.team?.name} logo={s.team?.logo} className="w-4 h-4" />
                       <span className={`truncate ${isHighlighted ? 'text-dark font-black' : 'text-primary font-medium hover:underline cursor-pointer'}`}>
                         {s.team?.name}
                       </span>

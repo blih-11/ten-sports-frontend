@@ -36,7 +36,7 @@ export default function HomeStandings() {
     <div>
       <div className="flex items-center justify-between border-t-4 border-dark pt-3 mb-6">
         <h2 className="text-dark font-black text-lg uppercase tracking-wide flex items-center gap-2">
-          <LeagueLogo slug={DEFAULT_LEAGUE} name={leagueInfo?.name} className="w-5 h-5" />
+          <LeagueLogo slug={DEFAULT_LEAGUE} name={leagueInfo?.name} logo={leagueInfo?.logo} className="w-5 h-5" />
           Standings{leagueInfo?.name ? ` — ${leagueInfo.name}` : ''}
         </h2>
         <Link to={`/football?tab=table&league=${DEFAULT_LEAGUE}`} className="text-primary text-sm font-semibold hover:underline">Full table →</Link>
@@ -68,7 +68,7 @@ export default function HomeStandings() {
                   <td className="py-3 px-4 text-gray-400 font-semibold">{s.rank}</td>
                   <td className="py-3">
                     <div className="flex items-center gap-2 min-w-0">
-                      <TeamLogo name={s.team?.name} />
+                      <TeamLogo name={s.team?.name} logo={s.team?.logo} />
                       <span className="text-white font-semibold truncate">{s.team?.name}</span>
                     </div>
                   </td>

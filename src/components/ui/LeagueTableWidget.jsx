@@ -52,7 +52,7 @@ useEffect(() => {
                 <td className="py-1.5 text-gray-500">{row.rank}</td>
                 <td className="py-1.5">
                   <div className="flex items-center gap-1.5">
-                    <TeamLogo name={row.team.name} className="w-4 h-4" />
+                    <TeamLogo name={row.team.name} logo={row.team.logo} className="w-4 h-4" />
                     <span className="font-medium truncate max-w-[80px]">{row.team.name}</span>
                   </div>
                 </td>

@@ -60,7 +60,7 @@ function FixtureRow({ fixture }) {
       <div className="flex md:hidden w-full items-center gap-2 px-3 py-3">
         {/* Competition logo */}
         <div className="w-4 h-4 shrink-0">
-          <LeagueLogo slug={fixture.league?.slug} name={fixture.league?.name} className="w-4 h-4" />
+          <LeagueLogo slug={fixture.league?.slug} name={fixture.league?.name} logo={fixture.league?.logo} className="w-4 h-4" />
         </div>
 
         {/* Home name */}
@@ -97,12 +97,12 @@ function FixtureRow({ fixture }) {
       <div className="hidden md:flex w-full items-center gap-3 px-5 py-4">
         {/* Competition logo */}
         <div className="w-6 h-6 shrink-0 flex items-center justify-center">
-          <LeagueLogo slug={fixture.league?.slug} name={fixture.league?.name} className="w-5 h-5" />
+          <LeagueLogo slug={fixture.league?.slug} name={fixture.league?.name} logo={fixture.league?.logo} className="w-5 h-5" />
         </div>
 
         {/* Home logo */}
         <div className="w-8 h-8 shrink-0 flex items-center justify-center">
-          <TeamLogo name={fixture.homeTeam?.name} className="w-8 h-8" />
+          <TeamLogo name={fixture.homeTeam?.name} logo={fixture.homeTeam?.logo} className="w-8 h-8" />
         </div>
 
         {/* Home name right-aligned */}
@@ -127,7 +127,7 @@ function FixtureRow({ fixture }) {
 
         {/* Away logo */}
         <div className="w-8 h-8 shrink-0 flex items-center justify-center">
-          <TeamLogo name={fixture.awayTeam?.name} className="w-8 h-8" />
+          <TeamLogo name={fixture.awayTeam?.name} logo={fixture.awayTeam?.logo} className="w-8 h-8" />
         </div>
 
         {/* FT / live */}
@@ -198,7 +198,7 @@ export default function CategoryResults({ categorySlug }) {
                       : 'border-transparent text-gray-400 hover:text-gray-700'
                   }`}
                 >
-                  <LeagueLogo slug={l.slug} name={l.name} className="w-4 h-4" />
+                  <LeagueLogo slug={l.slug} name={l.name} logo={l.logo} className="w-4 h-4" />
                   {l.name}
                 </button>
               ))}

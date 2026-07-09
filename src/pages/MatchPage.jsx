@@ -148,7 +148,7 @@ export default function MatchPage() {
             <div className="flex items-center justify-between gap-4">
               {/* Home */}
               <div className="flex-1 text-center">
-                <TeamLogo name={fixture.homeTeam?.name} className="w-16 h-16 mx-auto mb-3" />
+                <TeamLogo name={fixture.homeTeam?.name} logo={fixture.homeTeam?.logo} className="w-16 h-16 mx-auto mb-3" />
                 <h2 className="text-white font-bold text-lg leading-tight">{fixture.homeTeam?.name}</h2>
                 {hasLineups && <p className="text-gray-500 text-xs mt-1">{fixture.lineups.home.formation}</p>}
               </div>
@@ -193,7 +193,7 @@ export default function MatchPage() {
 
               {/* Away */}
               <div className="flex-1 text-center">
-                <TeamLogo name={fixture.awayTeam?.name} className="w-16 h-16 mx-auto mb-3" />
+                <TeamLogo name={fixture.awayTeam?.name} logo={fixture.awayTeam?.logo} className="w-16 h-16 mx-auto mb-3" />
                 <h2 className="text-white font-bold text-lg leading-tight">{fixture.awayTeam?.name}</h2>
                 {hasLineups && <p className="text-gray-500 text-xs mt-1">{fixture.lineups.away.formation}</p>}
               </div>

@@ -94,7 +94,7 @@ function MatchRow({ fixture }) {
       {/* Mobile */}
       <div className="flex md:hidden w-full items-center gap-2 px-3 py-3">
         <div className="flex items-center gap-1.5 flex-1 min-w-0">
-          <TeamLogo name={fixture.homeTeam?.name} className="w-5 h-5" />
+          <TeamLogo name={fixture.homeTeam?.name} logo={fixture.homeTeam?.logo} className="w-5 h-5" />
           <span className={`text-sm font-semibold truncate ${homeWin ? 'text-gray-900' : 'text-gray-500'}`}>
             {fixture.homeTeam?.name}
           </span>
@@ -121,7 +121,7 @@ function MatchRow({ fixture }) {
           <span className={`text-sm font-semibold truncate text-right ${awayWin ? 'text-gray-900' : 'text-gray-500'}`}>
             {fixture.awayTeam?.name}
           </span>
-          <TeamLogo name={fixture.awayTeam?.name} className="w-5 h-5" />
+          <TeamLogo name={fixture.awayTeam?.name} logo={fixture.awayTeam?.logo} className="w-5 h-5" />
         </div>
 
         <div className="w-6 shrink-0 text-right ml-1">
@@ -138,7 +138,7 @@ function MatchRow({ fixture }) {
         <div className="flex-1 flex items-center px-6 py-5 gap-3">
           {/* Home */}
           <div className="flex flex-col items-center gap-1 w-10 shrink-0">
-            <TeamLogo name={fixture.homeTeam?.name} className="w-9 h-9" />
+            <TeamLogo name={fixture.homeTeam?.name} logo={fixture.homeTeam?.logo} className="w-9 h-9" />
           </div>
           <span className={`text-sm font-bold flex-1 min-w-0 ${homeWin ? 'text-gray-900' : 'text-gray-500'}`}>
             {fixture.homeTeam?.name}
@@ -174,7 +174,7 @@ function MatchRow({ fixture }) {
             {fixture.awayTeam?.name}
           </span>
           <div className="flex flex-col items-center gap-1 w-10 shrink-0">
-            <TeamLogo name={fixture.awayTeam?.name} className="w-9 h-9" />
+            <TeamLogo name={fixture.awayTeam?.name} logo={fixture.awayTeam?.logo} className="w-9 h-9" />
           </div>
         </div>
       </div>
@@ -217,7 +217,7 @@ function DesktopMatchCell({ fixture }) {
       className="group flex items-center px-6 py-5 gap-3 hover:bg-gray-50 transition-colors"
     >
       <div className="w-9 h-9 shrink-0">
-        <TeamLogo name={fixture.homeTeam?.name} className="w-9 h-9" />
+        <TeamLogo name={fixture.homeTeam?.name} logo={fixture.homeTeam?.logo} className="w-9 h-9" />
       </div>
 
       <div className="flex flex-col flex-1 min-w-0 gap-0.5">
@@ -252,7 +252,7 @@ function DesktopMatchCell({ fixture }) {
       </div>
 
       <div className="w-9 h-9 shrink-0">
-        <TeamLogo name={fixture.awayTeam?.name} className="w-9 h-9" />
+        <TeamLogo name={fixture.awayTeam?.name} logo={fixture.awayTeam?.logo} className="w-9 h-9" />
       </div>
     </Link>
   )
@@ -265,7 +265,7 @@ function CompetitionBlock({ group }) {
       {/* Competition header */}
       <div className="flex items-center justify-between px-5 py-3 border-b border-gray-100">
         <div className="flex items-center gap-2">
-          <LeagueLogo slug={group.league?.slug} name={group.league?.name} className="w-6 h-6" />
+          <LeagueLogo slug={group.league?.slug} name={group.league?.name} logo={group.league?.logo} className="w-6 h-6" />
           <span className="text-sm font-black text-gray-800">
             {group.league?.name || 'Competition'}
           </span>

@@ -97,7 +97,7 @@ export default function TableTab({ sport = 'football', compact = false }) {
                 : 'bg-white text-gray-600 border-gray-300 hover:border-primary hover:text-primary'
             }`}
           >
-            <LeagueLogo slug={l.slug} name={l.name} className="w-4 h-4" />
+            <LeagueLogo slug={l.slug} name={l.name} logo={l.logo} className="w-4 h-4" />
             {l.name}
           </button>
         ))}

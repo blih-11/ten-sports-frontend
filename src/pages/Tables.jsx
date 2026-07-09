@@ -84,7 +84,7 @@ export default function Tables() {
                         : 'text-gray-400 hover:bg-surface hover:text-white'
                     }`}
                   >
-                    <LeagueLogo slug={l.slug} name={l.name} className="w-5 h-5 shrink-0" />
+                    <LeagueLogo slug={l.slug} name={l.name} logo={l.logo} className="w-5 h-5 shrink-0" />
                     <span className="truncate">{l.name}</span>
                   </button>
                 ))}
@@ -97,7 +97,7 @@ export default function Tables() {
             <div className="bg-dark rounded-xl overflow-hidden">
               <div className="px-6 py-4 border-b border-gray-800 flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <LeagueLogo slug={activeLeague} name={leagueInfo?.name} className="w-8 h-8" />
+                  <LeagueLogo slug={activeLeague} name={leagueInfo?.name} logo={leagueInfo?.logo} className="w-8 h-8" />
                   <h2 className="text-white font-black text-lg">
                     {FOOTBALL_LEAGUES.find(l => l.slug === activeLeague)?.name || activeLeague}
                   </h2>
@@ -155,7 +155,7 @@ export default function Tables() {
                             </td>
                             <td className="px-4 py-3">
                               <div className="flex items-center gap-3">
-                                <TeamLogo name={row.team?.name} className="w-6 h-6" />
+                                <TeamLogo name={row.team?.name} logo={row.team?.logo} className="w-6 h-6" />
                                 <span className={`font-semibold truncate ${i === 0 ? 'text-primary' : 'text-white'}`}>
                                   {row.team?.name}
                                 </span>

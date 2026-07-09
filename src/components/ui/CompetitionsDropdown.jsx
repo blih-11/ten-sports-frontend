@@ -165,7 +165,7 @@ export default function CompetitionsDropdown({ sport = 'football' }) {
                     onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
                   >
                     <div style={{ width: 24, height: 24, flexShrink: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                      <LeagueLogo slug={league.slug} name={league.name} className="w-6 h-6" />
+                      <LeagueLogo slug={league.slug} name={league.name} logo={league.logo} className="w-6 h-6" />
                     </div>
                     <span style={{ fontSize: 14, color: '#1f2937', fontWeight: 500 }}>{league.name}</span>
                   </Link>

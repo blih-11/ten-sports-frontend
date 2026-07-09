@@ -169,7 +169,7 @@ function CompMatchRow({ fixture }) {
       className="flex items-center justify-between gap-3 px-4 py-3.5 border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors"
     >
       <div className="flex items-center gap-2 flex-1 min-w-0">
-        <TeamLogo name={fixture.homeTeam?.name} className="w-5 h-5" />
+        <TeamLogo name={fixture.homeTeam?.name} logo={fixture.homeTeam?.logo} className="w-5 h-5" />
         <span className="text-sm font-semibold text-gray-800 truncate">{fixture.homeTeam?.name}</span>
       </div>
 
@@ -187,7 +187,7 @@ function CompMatchRow({ fixture }) {
 
       <div className="flex items-center gap-2 flex-1 min-w-0 justify-end">
         <span className="text-sm font-semibold text-gray-800 truncate text-right">{fixture.awayTeam?.name}</span>
-        <TeamLogo name={fixture.awayTeam?.name} className="w-5 h-5" />
+        <TeamLogo name={fixture.awayTeam?.name} logo={fixture.awayTeam?.logo} className="w-5 h-5" />
       </div>
     </Link>
   )
@@ -661,7 +661,7 @@ export default function CompetitionPage() {
               </span>
             ) : (
               <span className="flex items-center gap-2 pr-3 py-2.5 border-r border-gray-700 mr-1 shrink-0">
-                <LeagueLogo slug={competition?.slug} name={competition?.name} className="w-5 h-5" />
+                <LeagueLogo slug={competition?.slug} name={competition?.name} logo={competition?.logo} className="w-5 h-5" />
                 <span className="text-primary font-black text-xs uppercase tracking-widest whitespace-nowrap">
                   {competition?.name}
                 </span>

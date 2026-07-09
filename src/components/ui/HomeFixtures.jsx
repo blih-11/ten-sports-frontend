@@ -47,7 +47,7 @@ export default function HomeFixtures() {
             {/* League shown once, not repeated per row */}
             {leagueInfo && (
               <div className="flex items-center gap-2 px-4 py-3 border-b border-gray-800 shrink-0">
-                <LeagueLogo slug={leagueInfo.slug} name={leagueInfo.name} className="w-4 h-4" />
+                <LeagueLogo slug={leagueInfo.slug} name={leagueInfo.name} logo={leagueInfo.logo} className="w-4 h-4" />
                 <span className="text-gray-400 text-xs font-semibold uppercase tracking-wide">{leagueInfo.name}</span>
               </div>
             )}
@@ -68,7 +68,7 @@ export default function HomeFixtures() {
                       <span className={`truncate text-right ${f.score?.home > f.score?.away ? 'text-white font-bold' : 'text-gray-400 font-medium'}`}>
                         {f.homeTeam?.name}
                       </span>
-                      <TeamLogo name={f.homeTeam?.name} className="w-5 h-5" />
+                      <TeamLogo name={f.homeTeam?.name} logo={f.homeTeam?.logo} className="w-5 h-5" />
                     </div>
 
                     <div className="flex items-center gap-1 px-1 shrink-0 font-black text-white">
@@ -78,7 +78,7 @@ export default function HomeFixtures() {
                     </div>
 
                     <div className="flex items-center gap-1.5 min-w-0 flex-1">
-                      <TeamLogo name={f.awayTeam?.name} className="w-5 h-5" />
+                      <TeamLogo name={f.awayTeam?.name} logo={f.awayTeam?.logo} className="w-5 h-5" />
                       <span className={`truncate ${f.score?.away > f.score?.home ? 'text-white font-bold' : 'text-gray-400 font-medium'}`}>
                         {f.awayTeam?.name}
                       </span>

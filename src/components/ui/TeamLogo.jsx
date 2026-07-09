@@ -1,10 +1,12 @@
 import { getTeamLogo } from '../../data/logos'
 
-// Renders a team badge from the local static logo library — never from the backend.
-// Pass `name` (team display name / API name) and it resolves automatically.
-// `src` can still be passed to force a specific path (e.g. a manual override).
-export default function TeamLogo({ name, src, alt, className = 'w-5 h-5' }) {
-  const resolved = src || getTeamLogo(name)
+// Renders a team badge. Priority: explicit `src` override > `logo` saved on the
+// actual team/fixture record from the backend > local static library lookup by name.
+// This matters because logos assigned or uploaded in the admin are saved to the
+// team/fixture's `logo` field -- if we only ever looked the name up in the local
+// static library, admin-assigned logos would never show here.
+export default function TeamLogo({ name, logo, src, alt, className = 'w-5 h-5' }) {
+  const resolved = src || logo || getTeamLogo(name)
 
   if (resolved) {
     return <img src={resolved} alt={alt || name || ''} className={`${className} object-contain shrink-0`} />

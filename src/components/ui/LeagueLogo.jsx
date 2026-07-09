@@ -1,9 +1,10 @@
 import { getCompetitionLogo } from '../../data/logos'
 
-// Renders a competition/league badge from the local static logo library — never from the backend.
-// Pass `slug` (preferred, e.g. league.slug) or `name`; `src` still works as a manual override.
-export default function LeagueLogo({ slug, name, src, alt, className = 'w-4 h-4' }) {
-  const resolved = src || getCompetitionLogo(slug || name)
+// Renders a competition/league badge. Priority: explicit `src` override > `logo`
+// saved on the actual league/fixture record from the backend > local static
+// library lookup by slug/name.
+export default function LeagueLogo({ slug, name, logo, src, alt, className = 'w-4 h-4' }) {
+  const resolved = src || logo || getCompetitionLogo(slug || name)
 
   if (resolved) {
     return <img src={resolved} alt={alt || name || ''} className={`${className} object-contain shrink-0`} />

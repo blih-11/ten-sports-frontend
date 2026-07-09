@@ -46,20 +46,20 @@ export default function CategoryUpcomingMatches({ categorySlug }) {
           {fixtures.map(f => (
             <Link key={f._id} to={`/match/${f._id}`} className="group bg-dark rounded-xl p-5 flex flex-col hover:bg-surface transition-colors">
               <span className="flex items-center gap-1.5 mb-4">
-                <LeagueLogo slug={f.league?.slug} name={f.league?.name} className="w-4 h-4" />
+                <LeagueLogo slug={f.league?.slug} name={f.league?.name} logo={f.league?.logo} className="w-4 h-4" />
                 <span className="text-primary text-xs font-bold uppercase tracking-wide">{f.league?.name}</span>
               </span>
 
               <div className="flex items-center justify-center gap-3 mb-5">
                 <div className="flex flex-col items-center w-20 min-w-0">
-                  <TeamLogo name={f.homeTeam?.name} className="w-12 h-12 mb-2" />
+                  <TeamLogo name={f.homeTeam?.name} logo={f.homeTeam?.logo} className="w-12 h-12 mb-2" />
                   <span className="text-white font-bold text-[11px] leading-snug text-center truncate w-full">{f.homeTeam?.name}</span>
                 </div>
 
                 <span className="text-gray-500 text-xs font-semibold shrink-0 mb-6">vs</span>
 
                 <div className="flex flex-col items-center w-20 min-w-0">
-                  <TeamLogo name={f.awayTeam?.name} className="w-12 h-12 mb-2" />
+                  <TeamLogo name={f.awayTeam?.name} logo={f.awayTeam?.logo} className="w-12 h-12 mb-2" />
                   <span className="text-white font-bold text-[11px] leading-snug text-center truncate w-full">{f.awayTeam?.name}</span>
                 </div>
               </div>
