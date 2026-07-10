@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
-import { getArticles, getCategories, timeAgo } from '../utils/api'
+import { getArticles, getCategories, timeAgo, cardImage } from '../utils/api'
 import TransfersTab from '../components/ui/TransfersTab'
 import AdBanner from '../components/ui/AdBanner'
 
@@ -73,8 +73,8 @@ export default function Transfers() {
             <div className="lg:hidden -mx-4 sm:-mx-6 mb-6">
               <Link to={`/article/${hero.slug}`} className="group block relative">
                 <div className="w-full h-[420px] sm:h-[500px] overflow-hidden">
-                  {hero.featuredImage?.url
-                    ? <img src={hero.featuredImage.url} alt={hero.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                  {cardImage(hero)
+                    ? <img src={cardImage(hero)} alt={hero.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                     : <div className="w-full h-full bg-surface" />
                   }
                 </div>
@@ -110,8 +110,8 @@ export default function Transfers() {
               <div className="grid grid-cols-[1fr_300px] gap-10">
                 <Link to={`/article/${hero.slug}`} className="group block relative overflow-hidden rounded-xl bg-dark">
                   <div className="aspect-[16/7] overflow-hidden">
-                    {hero.featuredImage?.url
-                      ? <img src={hero.featuredImage.url} alt={hero.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    {cardImage(hero)
+                      ? <img src={cardImage(hero)} alt={hero.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                       : <div className="w-full h-full bg-surface" />
                     }
                   </div>
@@ -123,7 +123,7 @@ export default function Transfers() {
                   </div>
                 </Link>
                 <div className="flex flex-col gap-4">
-                  <AdBanner size="rectangle" />
+                  <AdBanner size="rectangle" slotKey="slot_transfers_rectangle" />
                 </div>
               </div>
             </div>

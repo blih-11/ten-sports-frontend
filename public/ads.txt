@@ -1,0 +1,5 @@
+# Replace PUB-ID-HERE with your real AdSense publisher ID once approved
+# (Publisher ID -> AdSense > Account > Account information).
+# This file MUST be served at https://yourdomain.com/ads.txt exactly as-is
+# for AdSense to fully validate your inventory.
+google.com, pub-PUB-ID-HERE, DIRECT, f08c47fec0942fa0

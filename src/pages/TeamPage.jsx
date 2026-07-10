@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useParams, useSearchParams, Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
-import api, { getFixtures, getTeamFeed, timeAgo } from '../utils/api'
+import api, { getFixtures, getTeamFeed, timeAgo, cardImage } from '../utils/api'
 import ArticleCard from '../components/ui/ArticleCard'
 import CategoryHero from '../components/ui/CategoryHero'
 import AdBanner from '../components/ui/AdBanner'
@@ -438,8 +438,8 @@ function TeamSidebar({ team, excludeIds = [] }) {
             {recent.map(a => (
               <Link key={a._id} to={`/article/${a.slug}`} className="group flex gap-3 py-3 hover:opacity-80 transition-opacity">
                 <div className="w-20 h-14 shrink-0 rounded-lg overflow-hidden bg-gray-100">
-                  {a.featuredImage?.url
-                    ? <img src={a.featuredImage.url} alt={a.title} className="w-full h-full object-cover" />
+                  {cardImage(a)
+                    ? <img src={cardImage(a)} alt={a.title} className="w-full h-full object-cover" />
                     : <div className="w-full h-full bg-gray-200" />
                   }
                 </div>
@@ -639,7 +639,7 @@ function TeamNewsTab({ team }) {
       {/* Desktop layout — two column */}
       <div className="hidden md:grid md:grid-cols-[1fr_300px] gap-10">
         <div className="min-w-0">
-          <AdBanner />
+          <AdBanner slotKey="slot_team_rectangle" />
 
           <div className="mt-6">
             <TeamNewsMatchStrip teamSlug={teamSlug} />

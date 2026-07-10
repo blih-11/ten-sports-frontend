@@ -28,6 +28,12 @@ export const timeAgo = (date) => {
 
 export const truncate = (str, n) => str?.length > n ? str.slice(0, n) + '...' : str
 
+// Card/thumbnail image for an article. Getty's embed widget can't be
+// cropped into a small card, so when an article uses a Getty embed as its
+// featured image, its separate `thumbnailUrl` (a normal uploaded image) is
+// what list/card views should show instead of the embed.
+export const cardImage = (entity) => entity?.featuredImage?.thumbnailUrl || entity?.featuredImage?.url || ''
+
 export const getStandings = (leagueSlug) => api.get('/standings', { params: { leagueSlug } })
 export const getFixtures = (params = {}) => api.get('/fixtures', { params })
 export const getFixture = (id) => api.get(`/fixtures/${id}`)

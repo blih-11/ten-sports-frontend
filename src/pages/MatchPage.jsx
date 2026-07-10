@@ -4,6 +4,7 @@ import { Helmet } from 'react-helmet-async'
 import api from '../utils/api'
 import { useActiveSport } from '../context/ActiveSportContext'
 import TeamLogo from '../components/ui/TeamLogo'
+import AffiliateCallout from '../components/ui/AffiliateCallout'
 
 function StatBar({ label, home, away }) {
   const total = (home || 0) + (away || 0)
@@ -136,6 +137,8 @@ export default function MatchPage() {
         <Link to="/football?tab=results" className="text-gray-500 text-sm hover:text-primary transition-colors mb-6 inline-block">
           ← Back to Results
         </Link>
+
+        <AffiliateCallout slotKey="slot_match_affiliate" className="mb-6" />
 
         {/* Match card — score, events, tabs and fallback all live in this single box */}
         <div className="bg-dark rounded-2xl overflow-hidden mb-6">

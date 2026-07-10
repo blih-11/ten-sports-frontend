@@ -5,6 +5,7 @@ import { getArticle, getRelated, formatDate } from '../utils/api'
 import { useActiveSport } from '../context/ActiveSportContext'
 import ArticleCard from '../components/ui/ArticleCard'
 import AdBanner from '../components/ui/AdBanner'
+import EmbedHtml from '../components/ui/EmbedHtml'
 import Newsletter from '../components/ui/Newsletter'
 import ShareButtons from '../components/ui/ShareButtons'
 import SidebarWidget from '../components/ui/SidebarWidget'
@@ -190,8 +191,14 @@ export default function ArticlePage() {
               <p className="text-sm text-gray-400">{formatDateTime(article.publishedAt)}</p>
             </div>
 
-            {/* Featured Image — edge-to-edge on mobile, contained + rounded on desktop */}
-            {article.featuredImage?.url && (
+            {/* Featured Image — edge-to-edge on mobile, contained + rounded on desktop.
+                Getty embed takes priority when set; it's the licensed image and the
+                only content in `featuredImage` when an editor chose the embed route. */}
+            {article.featuredImage?.embedHtml ? (
+              <figure className="-mx-4 sm:-mx-6 lg:mx-0 mb-6 flex justify-center">
+                <EmbedHtml html={article.featuredImage.embedHtml} className="w-full" />
+              </figure>
+            ) : article.featuredImage?.url && (
               <figure className="-mx-4 sm:-mx-6 lg:mx-0 mb-6">
                 <img
                   src={article.featuredImage.url}
@@ -211,7 +218,7 @@ export default function ArticlePage() {
                   <div dangerouslySetInnerHTML={{ __html: chunk }} />
                   {i < contentChunks.length - 1 && (
                     <div className="my-6">
-                      <AdBanner />
+                      <AdBanner slotKey="slot_article_leaderboard" />
                     </div>
                   )}
                 </div>
@@ -270,9 +277,9 @@ export default function ArticlePage() {
 
           {/* Sidebar */}
           <aside className="space-y-8">
-            <AdBanner size="rectangle" />
+            <AdBanner size="rectangle" slotKey="slot_article_rectangle" />
             <SidebarWidget title="Trending Now" />
-            <AdBanner size="square" />
+            <AdBanner size="square" slotKey="slot_article_square" />
             <SidebarWidget title="Latest News" />
           </aside>
         </div>

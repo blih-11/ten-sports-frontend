@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
-import { getHomeFeed, timeAgo } from '../utils/api'
+import { getHomeFeed, timeAgo, cardImage } from '../utils/api'
 import ArticleCard from '../components/ui/ArticleCard'
 import AdBanner from '../components/ui/AdBanner'
 import BreakingTicker from '../components/ui/BreakingTicker'
@@ -44,7 +44,7 @@ export default function Home() {
       <BreakingTicker />
 
       <div className="max-w-7xl mx-auto px-4 py-">
-        {/* <AdBanner size="leaderboard" /> */}
+        {/* <AdBanner size="leaderboard" slotKey="slot_home_leaderboard" /> */}
 
         {/* Hero block: 1 main story + 4 side news */}
         {!loading && (hero || side.length > 0) && (
@@ -66,8 +66,8 @@ export default function Home() {
               {hero && (
                 <Link to={`/article/${hero.slug}`} className="group block relative">
                   <div className="w-full h-[420px] sm:h-[500px] overflow-hidden">
-                    {hero.featuredImage?.url
-                      ? <img src={hero.featuredImage.url} alt={hero.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                    {cardImage(hero)
+                      ? <img src={cardImage(hero)} alt={hero.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                       : <div className="w-full h-full bg-surface" />
                     }
                   </div>
@@ -87,8 +87,8 @@ export default function Home() {
                 {side.slice(0, 4).map(a => (
                   <Link key={a._id} to={`/article/${a.slug}`} className="group flex items-center gap-4 py-4">
                     <div className="w-28 h-20 flex-shrink-0 rounded-xl overflow-hidden bg-surface">
-                      {a.featuredImage?.url
-                        ? <img src={a.featuredImage.url} alt={a.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                      {cardImage(a)
+                        ? <img src={cardImage(a)} alt={a.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                         : <div className="w-full h-full bg-surface" />
                       }
                     </div>
@@ -150,7 +150,7 @@ export default function Home() {
         {/* Top Stories: tabbed by category, 6 per tab, excludes everything above */}
         {!loading && <TopStories topStoriesByCategory={topStoriesByCategory} />}
 
-        <AdBanner size="leaderboard" />
+        <AdBanner size="leaderboard" slotKey="slot_home_leaderboard" />
         <div className="my-10"><Newsletter /></div>
       </div>
     </>

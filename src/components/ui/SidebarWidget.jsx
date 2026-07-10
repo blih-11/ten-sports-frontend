@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { getArticles, timeAgo } from '../../utils/api'
+import { getArticles, timeAgo, cardImage } from '../../utils/api'
 import { HorizontalSkeleton } from './Skeleton'
 
 export default function SidebarWidget({ title = 'Trending Now', category = '', limit = 5 }) {
@@ -27,8 +27,8 @@ export default function SidebarWidget({ title = 'Trending Now', category = '', l
           : articles.map((article) => (
             <Link key={article._id} to={`/article/${article.slug}`} className="group flex gap-3 hover:bg-gray-50 rounded-lg p-2 -mx-2 transition-colors">
               <div className="w-16 h-16 rounded-lg overflow-hidden bg-gray-100 shrink-0">
-                {article.featuredImage?.url
-                  ? <img src={article.featuredImage.url} alt={article.title} className="w-full h-full object-cover" />
+                {cardImage(article)
+                  ? <img src={cardImage(article)} alt={article.title} className="w-full h-full object-cover" />
                   : <div className="w-full h-full bg-gray-200" />
                 }
               </div>

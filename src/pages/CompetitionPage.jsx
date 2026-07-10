@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useParams, useSearchParams, Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
-import api, { getFixtures, getCompetitionFeed, timeAgo } from '../utils/api'
+import api, { getFixtures, getCompetitionFeed, timeAgo, cardImage } from '../utils/api'
 import ArticleCard from '../components/ui/ArticleCard'
 import CategoryHero from '../components/ui/CategoryHero'
 import AdBanner from '../components/ui/AdBanner'
@@ -353,8 +353,8 @@ function CompSidebar({ competition, excludeIds = [] }) {
               <Link key={a._id} to={`/article/${a.slug}`}
                 className="group flex gap-3 py-3 hover:opacity-80 transition-opacity">
                 <div className="w-20 h-14 shrink-0 rounded-lg overflow-hidden bg-gray-100">
-                  {a.featuredImage?.url
-                    ? <img src={a.featuredImage.url} alt={a.title} className="w-full h-full object-cover" />
+                  {cardImage(a)
+                    ? <img src={cardImage(a)} alt={a.title} className="w-full h-full object-cover" />
                     : <div className="w-full h-full bg-gray-200" />}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -525,7 +525,7 @@ function CompNewsTab({ competition }) {
       {/* Desktop — identical to TeamPage desktop layout */}
       <div className="hidden md:grid md:grid-cols-[1fr_300px] gap-10">
         <div className="min-w-0">
-          <AdBanner />
+          <AdBanner slotKey="slot_competition_leaderboard" />
 
           <div className="mt-6">
             <CompNewsMatchStrip competition={competition} />

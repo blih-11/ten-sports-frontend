@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import api, { getArticles, timeAgo } from '../../utils/api'
+import api, { getArticles, timeAgo, cardImage } from '../../utils/api'
 import { getTeamLogo } from '../../data/logos'
 
 const PAGE_SIZE = 8
@@ -40,8 +40,8 @@ function TransferCard({ article }) {
       className="group block bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-md transition-shadow"
     >
       <div className="relative aspect-video overflow-hidden bg-gray-100">
-        {article.featuredImage?.url
-          ? <img src={article.featuredImage.url} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+        {cardImage(article)
+          ? <img src={cardImage(article)} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
           : <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-100" />
         }
         <TeamTag tags={article.tags} />

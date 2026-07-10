@@ -3,6 +3,7 @@ import { Toaster } from 'react-hot-toast'
 import Layout from './components/layout/Layout'
 import Analytics from './components/Analytics'
 import { ActiveSportProvider } from './context/ActiveSportContext'
+import { MonetizationProvider } from './context/MonetizationContext'
 import Home from './pages/Home'
 import ArticlePage from './pages/ArticlePage'
 import CategoryPage from './pages/CategoryPage'
@@ -20,6 +21,7 @@ export default function App() {
     <BrowserRouter>
       <Analytics />
       <ActiveSportProvider>
+        <MonetizationProvider>
         <Layout>
           <Routes>
             <Route path="/" element={<Home />} />
@@ -35,6 +37,7 @@ export default function App() {
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Layout>
+        </MonetizationProvider>
       </ActiveSportProvider>
       <Toaster
         position="top-right"

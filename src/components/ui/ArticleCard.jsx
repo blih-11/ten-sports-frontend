@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { timeAgo, truncate } from '../../utils/api'
+import { timeAgo, truncate, cardImage } from '../../utils/api'
 
 export default function ArticleCard({ article, variant = 'default', hideCategory = false }) {
   if (!article) return null
@@ -7,8 +7,8 @@ export default function ArticleCard({ article, variant = 'default', hideCategory
   if (variant === 'featured') return (
     <Link to={`/article/${article.slug}`} className="group block relative overflow-hidden rounded-xl bg-dark">
       <div className="aspect-video bg-surface overflow-hidden">
-        {article.featuredImage?.url
-          ? <img src={article.featuredImage.url} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+        {cardImage(article)
+          ? <img src={cardImage(article)} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
           : <div className="w-full h-full bg-gradient-to-br from-surface to-gray-900 flex items-center justify-center text-gray-700 text-sm">No Image</div>
         }
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
@@ -25,8 +25,8 @@ export default function ArticleCard({ article, variant = 'default', hideCategory
   if (variant === 'horizontal') return (
     <Link to={`/article/${article.slug}`} className="group flex gap-3 hover:bg-surface rounded-lg p-2 -mx-2 transition-colors">
       <div className="w-28 h-20 flex-shrink-0 rounded-lg overflow-hidden bg-gray-100">
-        {article.featuredImage?.url
-          ? <img src={article.featuredImage.url} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+        {cardImage(article)
+          ? <img src={cardImage(article)} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
           : <div className="w-full h-full bg-gray-200" />
         }
       </div>
@@ -42,8 +42,8 @@ export default function ArticleCard({ article, variant = 'default', hideCategory
   if (variant === 'transfer') return (
     <Link to={`/article/${article.slug}`} className="group block bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-md transition-shadow">
       <div className="aspect-video overflow-hidden bg-gray-100">
-        {article.featuredImage?.url
-          ? <img src={article.featuredImage.url} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+        {cardImage(article)
+          ? <img src={cardImage(article)} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
           : <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-100 flex items-center justify-center text-gray-400 text-xs">No Image</div>
         }
       </div>
@@ -65,8 +65,8 @@ export default function ArticleCard({ article, variant = 'default', hideCategory
   return (
     <Link to={`/article/${article.slug}`} className="group block">
       <div className="aspect-video rounded-xl overflow-hidden bg-gray-100 mb-3">
-        {article.featuredImage?.url
-          ? <img src={article.featuredImage.url} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+        {cardImage(article)
+          ? <img src={cardImage(article)} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
           : <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-100 flex items-center justify-center text-gray-400 text-xs">No Image</div>
         }
       </div>
