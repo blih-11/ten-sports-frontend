@@ -69,7 +69,12 @@ export default function Home() {
                     <HeroThumb article={hero} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" placeholderClass="w-full h-full bg-surface" />
                   </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 px-4 pb-6">
+                  {/* z-index set high enough to outrank a body-appended third-party
+                      overlay (e.g. SmartFrame's) at the document root -- same fix
+                      as the desktop featured ArticleCard variant. Without this the
+                      caption sits below SmartFrame's overlay and is invisible until
+                      hover/interaction temporarily hides that overlay. */}
+                  <div className="absolute bottom-0 left-0 right-0 px-4 pb-6 z-[2147483647]">
                     <span className="inline-block text-[10px] font-black uppercase tracking-widest bg-primary text-dark px-2 py-0.5 rounded mb-2">
                       {hero.category?.name}
                     </span>
