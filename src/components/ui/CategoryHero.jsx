@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
-import ArticleCard from './ArticleCard'
-import { timeAgo, cardImage } from '../../utils/api'
+import ArticleCard, { HeroThumb, CardThumb } from './ArticleCard'
+import { timeAgo } from '../../utils/api'
 
 export default function CategoryHero({ hero, side = [] }) {
   if (!hero && side.length === 0) return null
@@ -24,10 +24,7 @@ export default function CategoryHero({ hero, side = [] }) {
         {hero && (
           <Link to={`/article/${hero.slug}`} className="group block relative">
             <div className="w-full h-[300px] sm:h-[380px] overflow-hidden">
-              {cardImage(hero)
-                ? <img src={cardImage(hero)} alt={hero.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                : <div className="w-full h-full bg-surface" />
-              }
+              <HeroThumb article={hero} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" placeholderClass="w-full h-full bg-surface" />
             </div>
             <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent" />
             <div className="absolute bottom-0 left-0 right-0 px-4 sm:px-6 pb-4">
@@ -53,10 +50,7 @@ export default function CategoryHero({ hero, side = [] }) {
           {side.slice(0, 12).map(a => (
             <Link key={a._id} to={`/article/${a.slug}`} className="group flex items-center gap-4 py-4">
               <div className="w-28 h-20 flex-shrink-0 rounded-xl overflow-hidden bg-surface">
-                {cardImage(a)
-                  ? <img src={cardImage(a)} alt={a.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                  : <div className="w-full h-full bg-surface" />
-                }
+                <CardThumb article={a} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" placeholderClass="w-full h-full bg-surface" />
               </div>
               <div className="flex-1 min-w-0">
                 <span className="text-primary text-xs font-bold uppercase tracking-wide">{a.category?.name}</span>

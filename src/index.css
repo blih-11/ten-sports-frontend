@@ -31,4 +31,17 @@ html { overflow-x: hidden; }
   .scrollbar-hide::-webkit-scrollbar {
     display: none;             /* Chrome, Safari, Opera */
   }
+
+  /* SmartFrame's <smartframe-embed> custom element (and its fallback/error
+     box) render at whatever fixed pixel width/height was baked into the
+     snippet at copy time in the SmartFrame Admin Panel -- same underlying
+     issue EmbedHtml.jsx already works around for Getty's iframe. Force it
+     to fill whatever container EmbedHtml puts it in (which is sized by our
+     own layout, e.g. aspect-video hero/card boxes) instead of leaving
+     letterboxed gaps above/below at its original fixed size. */
+  smartframe-embed {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+  }
 }

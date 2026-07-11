@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
-import { getHomeFeed, timeAgo, cardImage } from '../utils/api'
-import ArticleCard from '../components/ui/ArticleCard'
+import { getHomeFeed, timeAgo } from '../utils/api'
+import ArticleCard, { HeroThumb, CardThumb } from '../components/ui/ArticleCard'
 import AdBanner from '../components/ui/AdBanner'
 import BreakingTicker from '../components/ui/BreakingTicker'
 import Newsletter from '../components/ui/Newsletter'
@@ -66,10 +66,7 @@ export default function Home() {
               {hero && (
                 <Link to={`/article/${hero.slug}`} className="group block relative">
                   <div className="w-full h-[420px] sm:h-[500px] overflow-hidden">
-                    {cardImage(hero)
-                      ? <img src={cardImage(hero)} alt={hero.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                      : <div className="w-full h-full bg-surface" />
-                    }
+                    <HeroThumb article={hero} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" placeholderClass="w-full h-full bg-surface" />
                   </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 px-4 pb-6">
@@ -87,10 +84,7 @@ export default function Home() {
                 {side.slice(0, 4).map(a => (
                   <Link key={a._id} to={`/article/${a.slug}`} className="group flex items-center gap-4 py-4">
                     <div className="w-28 h-20 flex-shrink-0 rounded-xl overflow-hidden bg-surface">
-                      {cardImage(a)
-                        ? <img src={cardImage(a)} alt={a.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                        : <div className="w-full h-full bg-surface" />
-                      }
+                      <CardThumb article={a} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" placeholderClass="w-full h-full bg-surface" />
                     </div>
                     <div className="flex-1 min-w-0">
                       <span className="text-primary text-xs font-bold uppercase tracking-wide">{a.category?.name}</span>

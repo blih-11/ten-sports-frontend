@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
-import { getArticles, getCategories, timeAgo, cardImage } from '../utils/api'
+import { getArticles, getCategories, timeAgo } from '../utils/api'
+import { HeroThumb } from '../components/ui/ArticleCard'
 import TransfersTab from '../components/ui/TransfersTab'
 import AdBanner from '../components/ui/AdBanner'
 
@@ -73,10 +74,7 @@ export default function Transfers() {
             <div className="lg:hidden -mx-4 sm:-mx-6 mb-6">
               <Link to={`/article/${hero.slug}`} className="group block relative">
                 <div className="w-full h-[420px] sm:h-[500px] overflow-hidden">
-                  {cardImage(hero)
-                    ? <img src={cardImage(hero)} alt={hero.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                    : <div className="w-full h-full bg-surface" />
-                  }
+                  <HeroThumb article={hero} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" placeholderClass="w-full h-full bg-surface" />
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent" />
                 <div className="absolute bottom-0 left-0 right-0 px-4 pb-6">
@@ -110,10 +108,7 @@ export default function Transfers() {
               <div className="grid grid-cols-[1fr_300px] gap-10">
                 <Link to={`/article/${hero.slug}`} className="group block relative overflow-hidden rounded-xl bg-dark">
                   <div className="aspect-[16/7] overflow-hidden">
-                    {cardImage(hero)
-                      ? <img src={cardImage(hero)} alt={hero.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                      : <div className="w-full h-full bg-surface" />
-                    }
+                    <HeroThumb article={hero} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" placeholderClass="w-full h-full bg-surface" />
                   </div>
                   <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
                   <div className="absolute bottom-0 left-0 right-0 p-6">

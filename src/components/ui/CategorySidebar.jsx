@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { getArticles, getStandings, timeAgo, cardImage } from '../../utils/api'
+import { getArticles, getStandings, timeAgo } from '../../utils/api'
+import { CardThumb } from './ArticleCard'
 import SidebarStandings from './SidebarStandings'
 import TableTab from './TableTab'
 
@@ -70,10 +71,7 @@ export default function CategorySidebar({ categorySlug, excludeIds = [] }) {
             {recent.map(a => (
               <Link key={a._id} to={`/article/${a.slug}`} className="group flex gap-3 py-3 hover:opacity-80 transition-opacity">
                 <div className="w-20 h-14 shrink-0 rounded-lg overflow-hidden bg-gray-100">
-                  {cardImage(a)
-                    ? <img src={cardImage(a)} alt={a.title} className="w-full h-full object-cover" />
-                    : <div className="w-full h-full bg-gray-200" />
-                  }
+                  <CardThumb article={a} className="w-full h-full object-cover" placeholderClass="w-full h-full bg-gray-200" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <h4 className="text-gray-900 text-xs font-bold leading-snug line-clamp-2 group-hover:text-primary transition-colors">{a.title}</h4>

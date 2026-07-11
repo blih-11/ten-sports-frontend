@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { cardImage } from '../../utils/api'
+import { CardThumb } from './ArticleCard'
 
 // Renders the tabbed "Top Stories" widget from data the home feed already
 // computed (see getHomeFeed / articleController). This deliberately does
@@ -56,10 +56,12 @@ export default function TopStories({ topStoriesByCategory = [] }) {
               className="group flex-shrink-0 w-[220px] sm:w-[240px] snap-start"
             >
               <div className="aspect-video rounded-lg overflow-hidden bg-surface mb-2">
-                {cardImage(article)
-                  ? <img src={cardImage(article)} alt={article.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                  : <div className="w-full h-full bg-gradient-to-br from-surface to-gray-900 flex items-center justify-center text-gray-700 text-xs">No Image</div>
-                }
+                <CardThumb
+                  article={article}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  placeholderClass="w-full h-full bg-gradient-to-br from-surface to-gray-900 flex items-center justify-center text-gray-700 text-xs"
+                  placeholderText="No Image"
+                />
               </div>
               <h4 className="text-white text-sm font-bold leading-snug line-clamp-2 group-hover:text-primary transition-colors">
                 {article.title}

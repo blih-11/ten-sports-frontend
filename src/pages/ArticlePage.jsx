@@ -11,6 +11,11 @@ import ShareButtons from '../components/ui/ShareButtons'
 import SidebarWidget from '../components/ui/SidebarWidget'
 import { ArticleSkeleton } from '../components/ui/Skeleton'
 
+// Absolute site URL, needed for og:url and the fallback og:image (social
+// crawlers require absolute URLs, not relative paths). Set VITE_SITE_URL
+// in your .env for each environment (e.g. https://tensports.com in prod).
+const SITE_URL = (import.meta.env.VITE_SITE_URL || window.location.origin).replace(/\/$/, '')
+
 // Same icon set used across the site's share rows (Transfers page, etc.)
 const SHARE_ICONS = [
   {
@@ -80,6 +85,35 @@ function chunkContent(html, perChunk = 3) {
     chunks.push(paragraphs.slice(i, i + perChunk).join(''))
   }
   return chunks
+}
+
+// The admin editor's "embed" toolbar button inserts a
+// <div class="ql-embed-block" data-embed-html="...">...</div> placeholder
+// into the article body wherever an editor drops in a Getty (or other)
+// embed snippet mid-article. dangerouslySetInnerHTML never executes the
+// <script> tags inside that stored snippet, so we can't just render the
+// chunk as-is -- this splits each chunk around those placeholder divs and
+// renders a live <EmbedHtml> in their place instead.
+// Matches on data-embed-html specifically, regardless of what other
+// attributes are present or what order they're in -- earlier admin builds
+// had a bug where the class attribute never actually got applied, so
+// articles saved before that fix only have data-embed-html on the div.
+// Keying off that attribute alone means those already-published articles
+// render correctly too, without needing to be re-saved.
+const EMBED_BLOCK_RE = /<div[^>]*\sdata-embed-html="([^"]*)"[^>]*>[\s\S]*?<\/div>/g
+
+function splitEmbeds(html) {
+  const segments = []
+  let lastIndex = 0
+  let match
+  EMBED_BLOCK_RE.lastIndex = 0
+  while ((match = EMBED_BLOCK_RE.exec(html)) !== null) {
+    if (match.index > lastIndex) segments.push({ type: 'html', value: html.slice(lastIndex, match.index) })
+    segments.push({ type: 'embed', value: decodeURIComponent(match[1]) })
+    lastIndex = match.index + match[0].length
+  }
+  if (lastIndex < html.length) segments.push({ type: 'html', value: html.slice(lastIndex) })
+  return segments
 }
 
 export default function ArticlePage() {
@@ -154,9 +188,30 @@ export default function ArticlePage() {
       <Helmet>
         <title>{article.seo?.metaTitle || article.title} — Ten Sports</title>
         <meta name="description" content={article.seo?.metaDescription || article.excerpt} />
-        {article.featuredImage?.url && <meta property="og:image" content={article.featuredImage.url} />}
-        <meta property="og:title" content={article.title} />
-        <meta property="og:type" content="article" />
+
+        {/* Social preview cards (Facebook/X) -- image tags only render when
+            there's a real image you own the rights to (socialImage or
+            featuredImage). No image = no og:image/twitter:image at all,
+            which just gives a plain text-link preview card instead of
+            risking a Getty-sourced image showing up in a share card. */}
+        {(() => {
+          const shareImage = article.socialImage?.url || article.featuredImage?.url || article.featuredImage?.thumbnailUrl
+          return (
+            <>
+              <meta property="og:title" content={article.title} />
+              <meta property="og:description" content={article.seo?.metaDescription || article.excerpt} />
+              {shareImage && <meta property="og:image" content={shareImage} />}
+              <meta property="og:url" content={`${SITE_URL}/article/${article.slug}`} />
+              <meta property="og:type" content="article" />
+              <meta property="og:site_name" content="Ten Sports" />
+
+              <meta name="twitter:card" content={shareImage ? 'summary_large_image' : 'summary'} />
+              <meta name="twitter:title" content={article.title} />
+              <meta name="twitter:description" content={article.seo?.metaDescription || article.excerpt} />
+              {shareImage && <meta name="twitter:image" content={shareImage} />}
+            </>
+          )
+        })()}
       </Helmet>
 
       {/* Page bar — shows which sport's news this article belongs to, on every screen size */}
@@ -211,11 +266,20 @@ export default function ArticlePage() {
             {/* Share icons under the image */}
             <ImageShareRow title={article.title} url={shareUrl} />
 
-            {/* Content, with an ad dropped between every few paragraphs */}
+            {/* Content, with an ad dropped between every few paragraphs, and
+                any inline embed placeholders swapped for live embeds */}
             <div className="article-content">
               {contentChunks.map((chunk, i) => (
                 <div key={i}>
-                  <div dangerouslySetInnerHTML={{ __html: chunk }} />
+                  {splitEmbeds(chunk).map((seg, j) =>
+                    seg.type === 'embed' ? (
+                      <figure key={j} className="-mx-4 sm:-mx-6 lg:mx-0 my-6 flex justify-center">
+                        <EmbedHtml html={seg.value} className="w-full" />
+                      </figure>
+                    ) : (
+                      seg.value.trim() && <div key={j} dangerouslySetInnerHTML={{ __html: seg.value }} />
+                    )
+                  )}
                   {i < contentChunks.length - 1 && (
                     <div className="my-6">
                       <AdBanner slotKey="slot_article_leaderboard" />
