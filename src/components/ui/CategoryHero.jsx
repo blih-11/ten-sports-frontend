@@ -26,8 +26,10 @@ export default function CategoryHero({ hero, side = [] }) {
             <div className="w-full h-[300px] sm:h-[380px] overflow-hidden">
               <HeroThumb article={hero} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" placeholderClass="w-full h-full bg-surface" />
             </div>
-            <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent" />
-            <div className="absolute bottom-0 left-0 right-0 px-4 sm:px-6 pb-4">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent z-[2147483645]" />
+            {/* z-[2147483646], one below the header's max z-index -- see
+                Home.jsx's mobile hero for the full explanation. */}
+            <div className="absolute bottom-0 left-0 right-0 px-4 sm:px-6 pb-4 z-[2147483646]">
               {hero.isBreaking && (
                 <span className="inline-block text-[10px] font-black uppercase tracking-widest bg-primary text-dark px-2 py-0.5 rounded mb-2">
                   BREAKING

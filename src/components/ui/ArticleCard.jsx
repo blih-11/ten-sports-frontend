@@ -50,12 +50,15 @@ export default function ArticleCard({ article, variant = 'default', hideCategory
           placeholderClass="w-full h-full bg-gradient-to-br from-surface to-gray-900 flex items-center justify-center text-gray-700 text-sm"
           placeholderText="No Image"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-[2147483645]" />
       </div>
-      {/* z-index set high enough to outrank a body-appended third-party
-          overlay at the document root, since containment (isolate) alone
-          can't reach something that isn't our descendant. */}
-      <div className="absolute bottom-0 left-0 right-0 p-5 z-[2147483647]">
+      {/* z-[2147483646], one below the header's z-index (the true browser
+          max, 2147483647). High enough to outrank a body-appended
+          third-party overlay at the document root, since containment
+          (isolate) alone can't reach something that isn't our descendant --
+          but never above our own sticky header, which must always win when
+          this hero scrolls up underneath it. */}
+      <div className="absolute bottom-0 left-0 right-0 p-5 z-[2147483646]">
         {article.isBreaking && <span className="bg-primary text-dark text-xs font-bold px-2 py-0.5 rounded mb-2 inline-block">BREAKING</span>}
         <span className="bg-primary/90 text-dark text-xs font-bold px-2 py-0.5 rounded mb-2 inline-block ml-1">{article.category?.name}</span>
         <h2 className="text-white font-bold text-xl leading-tight group-hover:text-primary transition-colors line-clamp-2">{article.title}</h2>

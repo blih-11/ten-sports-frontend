@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { getHomeFeed, timeAgo } from '../utils/api'
+import { canonicalUrl } from '../utils/seo'
 import ArticleCard, { HeroThumb, CardThumb } from '../components/ui/ArticleCard'
 import AdBanner from '../components/ui/AdBanner'
 import BreakingTicker from '../components/ui/BreakingTicker'
@@ -39,6 +40,7 @@ export default function Home() {
       <Helmet>
         <title>Ten Sports — Football, Basketball & More</title>
         <meta name="description" content="Your number one source for football, basketball, tennis and all things sports." />
+        <link rel="canonical" href={canonicalUrl('/')} />
       </Helmet>
 
       <BreakingTicker />
@@ -68,8 +70,13 @@ export default function Home() {
                   <div className="w-full h-[420px] sm:h-[500px] overflow-hidden">
                     <HeroThumb article={hero} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" placeholderClass="w-full h-full bg-surface" />
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 px-4 pb-6">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent z-[2147483645]" />
+                  {/* z-[2147483646], one below the header's z-index (the true
+                      browser max, 2147483647) -- high enough to outrank a
+                      SmartFrame body-appended overlay, but never above our
+                      own sticky header, which must always win when the hero
+                      scrolls up underneath it. */}
+                  <div className="absolute bottom-0 left-0 right-0 px-4 pb-6 z-[2147483646]">
                     <span className="inline-block text-[10px] font-black uppercase tracking-widest bg-primary text-dark px-2 py-0.5 rounded mb-2">
                       {hero.category?.name}
                     </span>

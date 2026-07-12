@@ -166,12 +166,13 @@ export default function TransfersTab({ categoryId, excludeId }) {
   return (
     <div className="mt-6">
       <SortToggle value={sort} onChange={setSort} />
-      <NewsSection label="Top Stories" categoryId={categoryId} tag="transfer" sort={sort} excludeId={excludeId} />
+      <NewsSection label="Top Stories" categoryId={categoryId} sort={sort} excludeId={excludeId} />
       {LEAGUES.map(league => (
         <NewsSection
           key={league.slug}
           label={`${league.label} Transfers`}
-          tag={`transfer,${league.slug}`}
+          categoryId={categoryId}
+          tag={league.slug}
           sort={sort}
         />
       ))}

@@ -1,20 +1,13 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { getNavItems } from '../../utils/api'
+import { FALLBACK_SPORTS } from '../../data/navSports'
 
-const sections = [
-  {
-    title: 'Sports',
-    links: [
-      { to: '/football', label: 'Football' },
-      { to: '/nba', label: 'NBA' },
-      { to: '/tennis', label: 'Tennis' },
-      { to: '/athletics', label: 'Athletics' },
-    ],
-  },
+const OTHER_SECTIONS = [
   {
     title: 'Content',
     links: [
-      { to: '/transfers', label: 'Transfers' },
+      { to: '/transfer-news', label: 'Transfers' },
       { to: '/previews', label: 'Previews' },
       { to: '/analysis', label: 'Analysis' },
       { to: '/opinion', label: 'Opinion' },
@@ -25,8 +18,7 @@ const sections = [
     links: [
       { to: '/about', label: 'About Us' },
       { to: '/contact', label: 'Contact' },
-      { to: '/advertise', label: 'Advertise' },
-      { to: '/careers', label: 'Careers' },
+      { to: '/contact', label: 'Advertise' },
     ],
   },
 ]
@@ -110,7 +102,7 @@ function FooterSection({ title, links }) {
       {open && (
         <ul className="md:hidden pb-4 space-y-2 pl-1">
           {links.map(link => (
-            <li key={link.to}><Link to={link.to} className="text-gray-500 text-sm hover:text-primary transition-colors">{link.label}</Link></li>
+            <li key={`${link.to}-${link.label}`}><Link to={link.to} className="text-gray-500 text-sm hover:text-primary transition-colors">{link.label}</Link></li>
           ))}
         </ul>
       )}
@@ -120,7 +112,7 @@ function FooterSection({ title, links }) {
         <h4 className="text-white text-xs font-bold uppercase tracking-widest mb-4">{title}</h4>
         <ul className="space-y-2">
           {links.map(link => (
-            <li key={link.to}><Link to={link.to} className="text-gray-500 text-sm hover:text-primary transition-colors">{link.label}</Link></li>
+            <li key={`${link.to}-${link.label}`}><Link to={link.to} className="text-gray-500 text-sm hover:text-primary transition-colors">{link.label}</Link></li>
           ))}
         </ul>
       </div>
@@ -129,6 +121,23 @@ function FooterSection({ title, links }) {
 }
 
 export default function Footer() {
+  const [sports, setSports] = useState(FALLBACK_SPORTS)
+
+  useEffect(() => {
+    getNavItems()
+      .then(res => {
+        const items = res.data?.data
+        if (!Array.isArray(items) || !items.length) return
+        setSports(items.map(i => ({ label: i.label, slug: i.slug })))
+      })
+      .catch(() => {})
+  }, [])
+
+  const sections = [
+    { title: 'Sports', links: sports.map(s => ({ to: `/${s.slug}`, label: s.label })) },
+    ...OTHER_SECTIONS,
+  ]
+
   return (
     <footer className="bg-darker border-t border-gray-800 mt-16">
       <div className="max-w-7xl mx-auto px-4 py-12">

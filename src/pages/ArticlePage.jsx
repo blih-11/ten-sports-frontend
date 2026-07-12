@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { getArticle, getRelated, formatDate } from '../utils/api'
+import { canonicalUrl, SITE_URL } from '../utils/seo'
 import { useActiveSport } from '../context/ActiveSportContext'
 import ArticleCard from '../components/ui/ArticleCard'
 import AdBanner from '../components/ui/AdBanner'
@@ -11,10 +12,6 @@ import ShareButtons from '../components/ui/ShareButtons'
 import SidebarWidget from '../components/ui/SidebarWidget'
 import { ArticleSkeleton } from '../components/ui/Skeleton'
 
-// Absolute site URL, needed for og:url and the fallback og:image (social
-// crawlers require absolute URLs, not relative paths). Set VITE_SITE_URL
-// in your .env for each environment (e.g. https://tensports.com in prod).
-const SITE_URL = (import.meta.env.VITE_SITE_URL || window.location.origin).replace(/\/$/, '')
 
 // Same icon set used across the site's share rows (Transfers page, etc.)
 const SHARE_ICONS = [
@@ -212,6 +209,30 @@ export default function ArticlePage() {
             </>
           )
         })()}
+
+        <link rel="canonical" href={canonicalUrl(`/article/${article.slug}`)} />
+
+        {/* NewsArticle structured data -- this is what makes an article
+            eligible for Google's rich article cards / Top Stories carousel
+            / Google News, on top of plain text indexing. */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'NewsArticle',
+            headline: article.title,
+            description: article.seo?.metaDescription || article.excerpt,
+            image: [article.featuredImage?.url || article.featuredImage?.thumbnailUrl || article.socialImage?.url].filter(Boolean),
+            datePublished: article.publishedAt,
+            dateModified: article.updatedAt || article.publishedAt,
+            author: article.author?.name ? [{ '@type': 'Person', name: article.author.name }] : undefined,
+            publisher: {
+              '@type': 'Organization',
+              name: 'Ten Sports',
+              logo: { '@type': 'ImageObject', url: `${SITE_URL}/favicon.png` },
+            },
+            mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl(`/article/${article.slug}`) },
+          })}
+        </script>
       </Helmet>
 
       {/* Page bar — shows which sport's news this article belongs to, on every screen size */}

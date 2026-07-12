@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { Toaster } from 'react-hot-toast'
 import Layout from './components/layout/Layout'
 import Analytics from './components/Analytics'
@@ -29,7 +29,8 @@ export default function App() {
             <Route path="/results" element={<Results />} />
             <Route path="/match/:id" element={<MatchPage />} />
             <Route path="/team/:slug" element={<TeamPage />} />
-            <Route path="/transfers" element={<Transfers />} />
+            <Route path="/transfer-news" element={<Transfers />} />
+            <Route path="/transfers" element={<Navigate to="/transfer-news" replace />} />
             <Route path="/search" element={<SearchPage />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />

@@ -4,26 +4,14 @@ import TeamsDropdown from '../ui/TeamsDropdown'
 import CompetitionsDropdown from '../ui/CompetitionsDropdown'
 import { useActiveSport } from '../../context/ActiveSportContext'
 import { getNavItems } from '../../utils/api'
-
-// Fallback values, used until the live nav structure loads from the API (or
-// if that fetch ever fails) so the header never renders empty/broken.
-const FALLBACK_SPORTS = [
-  { label: 'Football',   slug: 'football' },
-  { label: 'Tennis',     slug: 'tennis' },
-  { label: 'Formula 1',  slug: 'formula-1' },
-  { label: 'NFL',        slug: 'nfl' },
-  { label: 'NBA',        slug: 'nba' },
-  { label: 'Rugby',      slug: 'rugby' },
-  { label: 'Golf',       slug: 'golf' },
-  { label: 'Boxing',     slug: 'boxing' },
-]
+import { FALLBACK_SPORTS } from '../../data/navSports'
 
 // Sub-nav per sport — shown as a second bar when inside that sport's section
 const FALLBACK_SPORT_SUBNAV = {
   football: [
     { label: 'News',               to: '/football' },
     { label: 'Results & Fixtures', to: '/football?tab=results' },
-    { label: 'Transfers',          to: '/football?tab=transfers' },
+    { label: 'Transfers',          to: '/transfer-news' },
     { label: 'Teams',              to: '/football?tab=teams' },
     { label: 'Competitions',       to: '/football?tab=competitions' },
     { label: 'Table',              to: '/football?tab=table' },
@@ -161,7 +149,7 @@ export default function Navbar() {
             .sort((a, b) => a.order - b.order)
             .map(t => ({
               label: t.label,
-              to: t.tab === 'news' ? `/${i.slug}` : `/${i.slug}?tab=${t.tab}`,
+              to: t.tab === 'news' ? `/${i.slug}` : t.tab === 'transfers' ? '/transfer-news' : `/${i.slug}?tab=${t.tab}`,
             }))
         })
         setSportSubnav(subnavMap)
@@ -226,7 +214,7 @@ export default function Navbar() {
     .map(s => ({ label: s.label, to: `/${s.slug}?tab=results` }))
 
   return (
-    <header style={{ position: 'sticky', top: 0, zIndex: 50, boxShadow: scrolled ? '0 4px 24px rgba(0,0,0,0.4)' : 'none' }}>
+    <header style={{ position: 'sticky', top: 0, zIndex: 2147483647, boxShadow: scrolled ? '0 4px 24px rgba(0,0,0,0.4)' : 'none' }}>
 
       {/* Top bar */}
       <div className="bg-darker text-gray-500 text-xs py-1.5">
@@ -340,7 +328,7 @@ export default function Navbar() {
             />
 
             <NavLink
-              to="/transfers"
+              to="/transfer-news"
               className={({ isActive }) =>
                 `px-4 py-3 text-sm font-semibold whitespace-nowrap border-b-2 transition-all ${
                   isActive ? 'text-primary border-primary' : 'text-gray-400 border-transparent hover:text-white hover:border-gray-600'
@@ -456,7 +444,7 @@ export default function Navbar() {
               </div>
             )}
 
-            <NavLink to="/transfers" onClick={() => setMenuOpen(false)}
+            <NavLink to="/transfer-news" onClick={() => setMenuOpen(false)}
               className={({ isActive }) => `block px-3 py-2.5 rounded-lg text-sm font-medium ${isActive ? 'bg-primary text-dark font-bold' : 'text-gray-300 hover:bg-surface'}`}
             >Transfers</NavLink>
 

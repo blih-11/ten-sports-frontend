@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { getPageSections } from '../utils/api'
+import { canonicalUrl } from '../utils/seo'
 
 const DEFAULTS = {
   hero_heading: 'About Ten Sports',
@@ -33,13 +34,13 @@ export default function About() {
 
   const bodyParagraphs = (page.who_we_are_body || '').split('\n\n').filter(Boolean)
   const coverItems = (page.what_we_cover_items || '').split('\n').filter(Boolean)
-  const stats = Array.isArray(page.stats) ? page.stats : DEFAULTS.stats
 
   return (
     <>
       <Helmet>
         <title>{page.seo_meta_title || DEFAULTS.seo_meta_title}</title>
         {page.seo_meta_description && <meta name="description" content={page.seo_meta_description} />}
+        <link rel="canonical" href={canonicalUrl('/about')} />
       </Helmet>
       <div className="bg-dark py-16">
         <div className="max-w-4xl mx-auto px-4 text-center">
@@ -70,15 +71,6 @@ export default function About() {
               ))}
             </ul>
           </div>
-        </div>
-
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-16">
-          {stats.map(stat => (
-            <div key={stat.label} className="bg-dark rounded-xl p-6 text-center">
-              <div className="text-primary font-black text-3xl mb-1">{stat.number}</div>
-              <div className="text-gray-400 text-sm">{stat.label}</div>
-            </div>
-          ))}
         </div>
 
         <div className="bg-gray-50 rounded-2xl p-8 text-center">

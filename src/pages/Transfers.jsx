@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { getArticles, getCategories, timeAgo } from '../utils/api'
+import { canonicalUrl } from '../utils/seo'
 import { HeroThumb } from '../components/ui/ArticleCard'
 import TransfersTab from '../components/ui/TransfersTab'
 import AdBanner from '../components/ui/AdBanner'
@@ -27,10 +28,14 @@ export default function Transfers() {
     getCategories()
       .then(res => {
         const categories = res.data.data || []
-        const football = categories.find(c => c.slug === 'football')
-        setCategory(football || null)
-        if (!football) return null
-        return getArticles({ category: football._id, tag: 'transfer', limit: 1, page: 1 })
+        // Articles live directly under a "Transfer News" category in the
+        // admin (that's the badge you see on these articles) -- not under
+        // Football tagged 'transfer'. Matching that is what was making this
+        // page always come up empty.
+        const transferNews = categories.find(c => c.slug === 'transfer-news')
+        setCategory(transferNews || null)
+        if (!transferNews) return null
+        return getArticles({ category: transferNews._id, limit: 1, page: 1 })
       })
       .then(res => {
         if (res) setHero((res.data.data || [])[0] || null)
@@ -44,6 +49,7 @@ export default function Transfers() {
       <Helmet>
         <title>Transfers — Ten Sports</title>
         <meta name="description" content="Football Transfer News, Updates and Rumours from Ten Sports." />
+        <link rel="canonical" href={canonicalUrl('/transfer-news')} />
       </Helmet>
 
       <div className="max-w-7xl mx-auto px-4 py-8">
@@ -76,8 +82,10 @@ export default function Transfers() {
                 <div className="w-full h-[420px] sm:h-[500px] overflow-hidden">
                   <HeroThumb article={hero} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" placeholderClass="w-full h-full bg-surface" />
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent" />
-                <div className="absolute bottom-0 left-0 right-0 px-4 pb-6">
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent z-[2147483645]" />
+                {/* z-[2147483646], one below the header's max z-index -- see
+                    Home.jsx's mobile hero for the full explanation. */}
+                <div className="absolute bottom-0 left-0 right-0 px-4 pb-6 z-[2147483646]">
                   <span className="inline-block text-[10px] font-black uppercase tracking-widest bg-primary text-dark px-2 py-0.5 rounded mb-2">{hero.category?.name}</span>
                   <h2 className="text-2xl font-bold leading-snug text-white line-clamp-2 mb-1">{hero.title}</h2>
                   <p className="text-xs text-gray-400">{timeAgo(hero.publishedAt)}</p>
@@ -110,8 +118,8 @@ export default function Transfers() {
                   <div className="aspect-[16/7] overflow-hidden">
                     <HeroThumb article={hero} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" placeholderClass="w-full h-full bg-surface" />
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent" />
-                  <div className="absolute bottom-0 left-0 right-0 p-6">
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent z-[2147483645]" />
+                  <div className="absolute bottom-0 left-0 right-0 p-6 z-[2147483646]">
                     <span className="inline-block text-[10px] font-black uppercase tracking-widest bg-primary text-dark px-2 py-0.5 rounded mb-2">{hero.category?.name}</span>
                     <h2 className="text-white font-bold text-2xl leading-tight group-hover:text-primary transition-colors line-clamp-2 mb-1">{hero.title}</h2>
                     <p className="text-gray-400 text-xs mt-2">{timeAgo(hero.publishedAt)}</p>

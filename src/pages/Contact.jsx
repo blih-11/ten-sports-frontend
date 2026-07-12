@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import toast from 'react-hot-toast'
 import { getPageSections } from '../utils/api'
+import { canonicalUrl } from '../utils/seo'
 
 const DEFAULTS = {
   hero_heading: 'Contact Us',
@@ -62,6 +63,7 @@ export default function Contact() {
       <Helmet>
         <title>{page.seo_meta_title || DEFAULTS.seo_meta_title}</title>
         {page.seo_meta_description && <meta name="description" content={page.seo_meta_description} />}
+        <link rel="canonical" href={canonicalUrl('/contact')} />
       </Helmet>
       <div className="bg-dark py-16">
         <div className="max-w-4xl mx-auto px-4 text-center">
