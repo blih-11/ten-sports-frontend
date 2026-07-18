@@ -38,7 +38,7 @@ export default function Home() {
   return (
     <>
       <Helmet>
-        <title>Ten Sports — Football, Basketball & More</title>
+        <title>Tave Sports — Football, Basketball & More</title>
         <meta name="description" content="Your number one source for football, basketball, tennis and all things sports." />
         <link rel="canonical" href={canonicalUrl('/')} />
       </Helmet>

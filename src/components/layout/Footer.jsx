@@ -1,7 +1,13 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { getNavItems } from '../../utils/api'
+import { getNavItems, getPageSections } from '../../utils/api'
 import { FALLBACK_SPORTS } from '../../data/navSports'
+
+const DEFAULTS = {
+  brand_name: 'Tave Sports',
+  tagline: 'Your number one source for football, NBA, tennis, and all things sports.',
+  copyright_text: 'Tave Sports. All rights reserved.',
+}
 
 const OTHER_SECTIONS = [
   {
@@ -14,7 +20,7 @@ const OTHER_SECTIONS = [
     ],
   },
   {
-    title: 'Ten Sports Channels',
+    title: 'Tave Sports Channels',
     links: [
       { to: '/about', label: 'About Us' },
       { to: '/contact', label: 'Contact' },
@@ -122,6 +128,7 @@ function FooterSection({ title, links }) {
 
 export default function Footer() {
   const [sports, setSports] = useState(FALLBACK_SPORTS)
+  const [page, setPage] = useState(DEFAULTS)
 
   useEffect(() => {
     getNavItems()
@@ -131,7 +138,17 @@ export default function Footer() {
         setSports(items.map(i => ({ label: i.label, slug: i.slug })))
       })
       .catch(() => {})
+
+    getPageSections('footer')
+      .then(res => setPage(p => ({ ...p, ...(res.data?.data || {}) })))
+      .catch(() => {}) // keep defaults if this fails
   }, [])
+
+  // "Tave Sports" -> "Tave" (plain) + "Sports" (accent colour), matching
+  // the original two-tone wordmark style for whatever brand name an editor
+  // sets -- same split approach as the Navbar wordmark and About's heading.
+  const brandWords = (page.brand_name || DEFAULTS.brand_name).split(' ')
+  const [brandFirst, ...brandRest] = brandWords
 
   const sections = [
     { title: 'Sports', links: sports.map(s => ({ to: `/${s.slug}`, label: s.label })) },
@@ -142,8 +159,8 @@ export default function Footer() {
     <footer className="bg-darker border-t border-gray-800 mt-16">
       <div className="max-w-7xl mx-auto px-4 py-12">
         <div className="mb-10">
-          <div className="text-white font-black text-xl mb-3">TEN <span className="text-primary">SPORTS</span></div>
-          <p className="text-gray-500 text-sm leading-relaxed mb-4 max-w-md">Your number one source for football, NBA, tennis, and all things sports.</p>
+          <div className="text-white font-black text-xl mb-3">{brandFirst} <span className="text-primary">{brandRest.join(' ')}</span></div>
+          <p className="text-gray-500 text-sm leading-relaxed mb-4 max-w-md">{page.tagline || DEFAULTS.tagline}</p>
           <div className="flex gap-3">
             {socials.map(s => (
               
@@ -167,7 +184,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-gray-800 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3">
-          <p className="text-gray-600 text-xs">© {new Date().getFullYear()} Ten Sports. All rights reserved.</p>
+          <p className="text-gray-600 text-xs">© {new Date().getFullYear()} {page.copyright_text || DEFAULTS.copyright_text}</p>
           <div className="flex gap-4">
             {legalLinks.map(l => (
               <Link key={l.to} to={l.to} className="text-gray-600 text-xs hover:text-gray-400 transition-colors">{l.label}</Link>

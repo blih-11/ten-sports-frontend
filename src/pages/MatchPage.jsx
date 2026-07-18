@@ -120,7 +120,7 @@ export default function MatchPage() {
   return (
     <>
       <Helmet>
-        <title>{fixture.homeTeam?.name} vs {fixture.awayTeam?.name} — Ten Sports</title>
+        <title>{fixture.homeTeam?.name} vs {fixture.awayTeam?.name} — Tave Sports</title>
       </Helmet>
 
       {/* Mobile page bar — sticky, shows which sport's results this match belongs to */}

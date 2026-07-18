@@ -4,16 +4,16 @@ import { getPageSections } from '../utils/api'
 import { canonicalUrl } from '../utils/seo'
 
 const DEFAULTS = {
-  hero_heading: 'About Ten Sports',
+  hero_heading: 'About Tave Sports',
   hero_subheading: 'Your number one source for sports news, analysis and opinion.',
   who_we_are_heading: 'Who We Are',
-  who_we_are_body: 'Ten Sports is a digital sports media platform dedicated to delivering fast, accurate and engaging sports content across football, NBA, tennis and more.\n\nFounded by passionate sports fans, we believe everyone deserves access to quality sports journalism — from breaking transfer news to in-depth tactical analysis.',
+  who_we_are_body: 'Tave Sports is a digital sports media platform dedicated to delivering fast, accurate and engaging sports content across football, NBA, tennis and more.\n\nFounded by passionate sports fans, we believe everyone deserves access to quality sports journalism — from breaking transfer news to in-depth tactical analysis.',
   what_we_cover_heading: 'What We Cover',
   what_we_cover_items: 'Football — Premier League, UCL, La Liga & more\nNBA — EuroLeague & more\nTennis — ATP, WTA, Grand Slams\nTransfers — Breaking news & rumours\nAnalysis — Tactical breakdowns & opinion',
   stats: [{ number: '4.2K+', label: 'Followers' }, { number: '1M+', label: 'Monthly Views' }, { number: '1.8K+', label: 'Articles' }, { number: '10+', label: 'Sports Covered' }],
   cta_heading: 'Join Our Team',
   cta_body: "Are you a passionate sports writer or journalist? We'd love to hear from you.",
-  seo_meta_title: 'About Us — Ten Sports',
+  seo_meta_title: 'About Us — Tave Sports',
   seo_meta_description: '',
 }
 
@@ -26,7 +26,7 @@ export default function About() {
       .catch(() => {}) // keep defaults if this fails
   }, [])
 
-  // "About Ten Sports" -> "About" (plain) + "Ten Sports" (accent colour),
+  // "About Tave Sports" -> "About" (plain) + "Tave Sports" (accent colour),
   // matching the original two-tone heading style for whatever text an
   // editor sets.
   const headingWords = (page.hero_heading || '').split(' ')

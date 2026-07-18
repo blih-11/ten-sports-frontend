@@ -28,7 +28,7 @@ export default function SearchPage() {
   return (
     <>
       <Helmet>
-        <title>{q ? `Search: ${q}` : 'Search'} — Ten Sports</title>
+        <title>{q ? `Search: ${q}` : 'Search'} — Tave Sports</title>
         <meta name="robots" content="noindex, follow" />
       </Helmet>
       <div className="bg-dark py-10">

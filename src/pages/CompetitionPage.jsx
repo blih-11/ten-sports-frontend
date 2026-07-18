@@ -644,7 +644,7 @@ export default function CompetitionPage() {
   return (
     <>
       <Helmet>
-        <title>{competition ? `${competition.name} — Ten Sports` : 'Competition — Ten Sports'}</title>
+        <title>{competition ? `${competition.name} — Tave Sports` : 'Competition — Tave Sports'}</title>
         <meta name="description" content={competition ? `Latest ${competition.name} news, fixtures, results and standings.` : ''} />
       </Helmet>
 

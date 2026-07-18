@@ -183,7 +183,7 @@ export default function ArticlePage() {
   return (
     <>
       <Helmet>
-        <title>{article.seo?.metaTitle || article.title} — Ten Sports</title>
+        <title>{article.seo?.metaTitle || article.title} — Tave Sports</title>
         <meta name="description" content={article.seo?.metaDescription || article.excerpt} />
 
         {/* Social preview cards (Facebook/X) -- image tags only render when
@@ -200,7 +200,7 @@ export default function ArticlePage() {
               {shareImage && <meta property="og:image" content={shareImage} />}
               <meta property="og:url" content={`${SITE_URL}/article/${article.slug}`} />
               <meta property="og:type" content="article" />
-              <meta property="og:site_name" content="Ten Sports" />
+              <meta property="og:site_name" content="Tave Sports" />
 
               <meta name="twitter:card" content={shareImage ? 'summary_large_image' : 'summary'} />
               <meta name="twitter:title" content={article.title} />
@@ -227,7 +227,7 @@ export default function ArticlePage() {
             author: article.author?.name ? [{ '@type': 'Person', name: article.author.name }] : undefined,
             publisher: {
               '@type': 'Organization',
-              name: 'Ten Sports',
+              name: 'Tave Sports',
               logo: { '@type': 'ImageObject', url: `${SITE_URL}/favicon.png` },
             },
             mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl(`/article/${article.slug}`) },

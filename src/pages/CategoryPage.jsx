@@ -117,8 +117,8 @@ export default function CategoryPage() {
   return (
     <>
       <Helmet>
-        <title>{catName} — Ten Sports</title>
-        <meta name="description" content={`Latest ${catName} news, updates and analysis from Ten Sports.`} />
+        <title>{catName} — Tave Sports</title>
+        <meta name="description" content={`Latest ${catName} news, updates and analysis from Tave Sports.`} />
         <link rel="canonical" href={canonicalUrl(activeTab === 'news' ? `/${categorySlug}` : `/${categorySlug}?tab=${activeTab}`)} />
       </Helmet>
 

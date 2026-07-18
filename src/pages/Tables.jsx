@@ -58,7 +58,7 @@ export default function Tables() {
   return (
     <>
       <Helmet>
-        <title>League Tables — Ten Sports</title>
+        <title>League Tables — Tave Sports</title>
         <meta name="description" content="Football league tables and standings — Premier League, La Liga, Serie A and more." />
       </Helmet>
 

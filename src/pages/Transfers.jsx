@@ -47,8 +47,8 @@ export default function Transfers() {
   return (
     <>
       <Helmet>
-        <title>Transfers — Ten Sports</title>
-        <meta name="description" content="Football Transfer News, Updates and Rumours from Ten Sports." />
+        <title>Transfers — Tave Sports</title>
+        <meta name="description" content="Football Transfer News, Updates and Rumours from Tave Sports." />
         <link rel="canonical" href={canonicalUrl('/transfer-news')} />
       </Helmet>
 

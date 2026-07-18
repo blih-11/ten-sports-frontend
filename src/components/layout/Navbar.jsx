@@ -235,7 +235,7 @@ export default function Navbar() {
         <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
           <Link to="/" className="flex-shrink-0">
             <span className="text-white font-black text-2xl tracking-tight">
-              TEN <span className="text-primary">SPORTS</span>
+              TAVE <span className="text-primary">SPORTS</span>
             </span>
           </Link>
 

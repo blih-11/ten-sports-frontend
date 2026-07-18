@@ -7,11 +7,11 @@ import { canonicalUrl } from '../utils/seo'
 const DEFAULTS = {
   hero_heading: 'Contact Us',
   hero_subheading: 'Got a story tip, advertising enquiry or just want to say hi?',
-  contact_email: 'hello@tensports.com',
-  contact_twitter: '@TenSports',
-  contact_facebook: 'Ten Sports',
+  contact_email: 'hello@tavesports.com',
+  contact_twitter: '@TaveSports',
+  contact_facebook: 'Tave Sports',
   contact_location: 'Lagos, Nigeria',
-  seo_meta_title: 'Contact Us — Ten Sports',
+  seo_meta_title: 'Contact Us — Tave Sports',
   seo_meta_description: '',
 }
 

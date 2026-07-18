@@ -424,7 +424,7 @@ export default function Results() {
   return (
     <>
       <Helmet>
-        <title>Scores & Fixtures — Ten Sports</title>
+        <title>Scores & Fixtures — Tave Sports</title>
         <meta name="description" content="Live scores, fixtures and results across all sports." />
       </Helmet>
 

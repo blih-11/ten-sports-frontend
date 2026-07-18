@@ -767,7 +767,7 @@ export default function TeamPage() {
   return (
     <>
       <Helmet>
-        <title>{team ? `${team.name} — Ten Sports` : 'Team — Ten Sports'}</title>
+        <title>{team ? `${team.name} — Tave Sports` : 'Team — Tave Sports'}</title>
         <meta name="description" content={team ? `Latest ${team.name} news, fixtures, results and transfers.` : ''} />
       </Helmet>
 
