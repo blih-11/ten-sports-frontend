@@ -13,7 +13,7 @@ const PUBLIC_DIR = join(__dirname, '..', 'public')
 const API_URL = process.env.VITE_API_URL || 'http://localhost:5000/api'
 const SITE_URL = (process.env.VITE_SITE_URL || 'https://tensport.netlify.app').replace(/\/$/, '')
 
-const STATIC_PATHS = ['/', '/about', '/contact', '/transfer-news']
+const STATIC_PATHS = ['/', '/about', '/contact', '/transfer-news', '/privacy', '/terms']
 
 const xmlEscape = (s = '') => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
 
