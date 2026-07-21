@@ -97,7 +97,18 @@ function chunkContent(html, perChunk = 3) {
 // articles saved before that fix only have data-embed-html on the div.
 // Keying off that attribute alone means those already-published articles
 // render correctly too, without needing to be re-saved.
-const EMBED_BLOCK_RE = /<div[^>]*\sdata-embed-html="([^"]*)"[^>]*>[\s\S]*?<\/div>/g
+// Matches the admin's <tave-embed> block (see InlineEmbedBlot in
+// ArticleEditor.jsx). This used to match a generic <div>, but that
+// collided with Quill's paste handling: any pasted plain <div> (which is
+// how Word/Google Docs/many sites wrap ordinary paragraphs) was getting
+// misidentified as an embed block. The admin now writes a distinct,
+// hyphenated custom tag that real paste sources never produce, so this
+// regex was updated to match it specifically instead. IMPORTANT: this same
+// admin is shared across both the sports and news sites (via the
+// Sports/News toggle in the sidebar) -- the tag name must stay identical
+// here and in the news frontend's copy of this regex, or embeds inserted
+// while editing an article for this site will silently fail to render.
+const EMBED_BLOCK_RE = /<tave-embed[^>]*\sdata-embed-html="([^"]*)"[^>]*>[\s\S]*?<\/tave-embed>/g
 
 function splitEmbeds(html) {
   const segments = []
@@ -259,7 +270,7 @@ export default function ArticlePage() {
           {/* Main Article */}
           <article className="lg:col-span-2">
             <h1 className="text-dark font-bold text-2xl md:text-3xl leading-tight mb-3">{article.title}</h1>
-            <p className="text-gray-500 text-base md:text-lg leading-relaxed mb-5">{article.excerpt}</p>
+            <p className="text-gray-500 text-base md:text-lg leading-relaxed mb-5">{article.subheading || article.excerpt}</p>
 
             {/* Author + date/time */}
             <div className="flex items-center justify-between flex-wrap gap-2 py-4 border-y border-gray-200 mb-6">

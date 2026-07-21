@@ -21,7 +21,7 @@ export default function CookieConsent() {
   if (!visible) return null
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-[100] bg-dark border-t-4 border-primary">
+    <div className="fixed bottom-0 left-0 right-0 z-[2147483647] bg-dark border-t-4 border-primary">
       <div className="max-w-5xl mx-auto px-4 py-4 flex flex-col sm:flex-row items-start sm:items-center gap-3 sm:gap-6">
         <p className="text-gray-400 text-xs sm:text-sm flex-1">
           We use cookies for analytics and to show relevant ads. See our{' '}

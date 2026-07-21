@@ -34,9 +34,11 @@ export const truncate = (str, n) => str?.length > n ? str.slice(0, n) + '...' : 
 // what list/card views should show instead of the embed.
 export const cardImage = (entity) => entity?.featuredImage?.thumbnailUrl || entity?.featuredImage?.url || ''
 // Responsive thumbnail embed (e.g. SmartFrame) takes priority over cardImage
-// when set -- unlike Getty's embed, these are safe to render at small card
-// sizes, so there's no need to fall back to a separately uploaded image.
-export const cardEmbedHtml = (entity) => entity?.featuredImage?.thumbnailEmbedHtml || ''
+// when set. Falls back to the full featuredImage embed as a last resort
+// (only when there's neither a dedicated thumbnail NOR a plain uploaded
+// image) -- an imperfectly-cropped embed at card size still beats
+// rendering a blank "No Image" box.
+export const cardEmbedHtml = (entity) => entity?.featuredImage?.thumbnailEmbedHtml || entity?.featuredImage?.embedHtml || ''
 
 export const getStandings = (leagueSlug) => api.get('/standings', { params: { leagueSlug } })
 export const getFixtures = (params = {}) => api.get('/fixtures', { params })
