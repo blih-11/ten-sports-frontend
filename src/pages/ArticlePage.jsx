@@ -283,7 +283,9 @@ export default function ArticlePage() {
                 only content in `featuredImage` when an editor chose the embed route. */}
             {article.featuredImage?.embedHtml ? (
               <figure className="-mx-4 sm:-mx-6 lg:mx-0 mb-6 flex justify-center">
-                <EmbedHtml html={article.featuredImage.embedHtml} className="w-full" />
+                <div className="w-full aspect-video lg:rounded-xl overflow-hidden">
+                  <EmbedHtml html={article.featuredImage.embedHtml} className="w-full h-full" />
+                </div>
               </figure>
             ) : article.featuredImage?.url && (
               <figure className="-mx-4 sm:-mx-6 lg:mx-0 mb-6">
@@ -306,7 +308,9 @@ export default function ArticlePage() {
                   {splitEmbeds(chunk).map((seg, j) =>
                     seg.type === 'embed' ? (
                       <figure key={j} className="-mx-4 sm:-mx-6 lg:mx-0 my-6 flex justify-center">
-                        <EmbedHtml html={seg.value} className="w-full" />
+                        <div className="w-full aspect-video overflow-hidden">
+                          <EmbedHtml html={seg.value} className="w-full h-full" />
+                        </div>
                       </figure>
                     ) : (
                       seg.value.trim() && <div key={j} dangerouslySetInnerHTML={{ __html: seg.value }} />

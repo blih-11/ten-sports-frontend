@@ -122,5 +122,10 @@ export default function EmbedHtml({ html, className = '' }) {
   }, [html])
 
   if (!html) return null
-  return <div ref={containerRef} className={className} />
+  return (
+    <div
+      ref={containerRef}
+      className={`${className} [&_iframe]:w-full [&_iframe]:h-full [&_iframe]:block [&_img]:w-full [&_img]:h-full [&_img]:object-cover [&_img]:block [&_video]:w-full [&_video]:h-full [&_video]:object-cover [&_video]:block [&_smartframe-embed]:!w-full [&_smartframe-embed]:!h-full [&_smartframe-embed]:![max-width:none] [&_smartframe-embed]:![aspect-ratio:auto] [&_smartframe-embed]:!block [&_smartframe-embed_canvas]:!w-full [&_smartframe-embed_canvas]:!h-full [&_smartframe-embed_canvas]:![object-fit:cover]`}
+    />
+  )
 }
