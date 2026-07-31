@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { getArticle, getRelated, formatDate } from '../utils/api'
-import { canonicalUrl, SITE_URL } from '../utils/seo'
+import { canonicalUrl, SITE_URL, socialImageUrl } from '../utils/seo'
 import { useActiveSport } from '../context/ActiveSportContext'
 import ArticleCard from '../components/ui/ArticleCard'
 import AdBanner from '../components/ui/AdBanner'
@@ -203,7 +203,7 @@ export default function ArticlePage() {
             which just gives a plain text-link preview card instead of
             risking a Getty-sourced image showing up in a share card. */}
         {(() => {
-          const shareImage = article.socialImage?.url || article.featuredImage?.url || article.featuredImage?.thumbnailUrl
+          const shareImage = socialImageUrl(article.socialImage?.url || article.featuredImage?.url || article.featuredImage?.thumbnailUrl)
           return (
             <>
               <meta property="og:title" content={article.title} />
